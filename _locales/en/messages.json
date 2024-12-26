@@ -1,0 +1,134 @@
+{
+    "extName": {
+        "message": "Quote Card Generator"
+    },
+    "extDesc": {
+        "message": "Generate beautiful quote cards with one click, supporting multiple templates and custom styles."
+    },
+    "menuTitle": {
+        "message": "Generate Quote Card"
+    },
+    "inputPlaceholder": {
+        "message": "Enter text here..."
+    },
+    "templates_title": {
+        "message": "Choose Template"
+    },
+    "templates_simpleWhite": {
+        "message": "Simple White"
+    },
+    "settings_title": {
+        "message": "Style Settings"
+    },
+    "settings_background": {
+        "message": "Background"
+    },
+    "buttons_export": {
+        "message": "Export Image"
+    },
+    "buttons_saveTemplate": {
+        "message": "Save Template"
+    },
+    "buttons_cancel": {
+        "message": "Cancel"
+    },
+    "buttons_confirm": {
+        "message": "Confirm"
+    },
+    "messages_success_export": {
+        "message": "Export successful! Image saved to downloads"
+    },
+    "messages_success_saveTemplate": {
+        "message": "Template saved successfully!"
+    },
+    "messages_success_languageChanged": {
+        "message": "Language changed successfully"
+    },
+    "messages_success_copied": {
+        "message": "Text copied to clipboard"
+    },
+    "messages_error_export": {
+        "message": "Export failed, please try again"
+    },
+    "messages_error_saveTemplate": {
+        "message": "Failed to save template, please try again"
+    },
+    "messages_error_compatibility": {
+        "message": "Browser compatibility issue: $1"
+    },
+    "messages_error_storage": {
+        "message": "Storage quota exceeded, please clear some space"
+    },
+    "messages_error_general": {
+        "message": "An error occurred, please try again"
+    },
+    "messages_prompt_templateName": {
+        "message": "Please enter template name (cannot be empty)"
+    },
+    "messages_prompt_deleteTemplate": {
+        "message": "Are you sure you want to delete this template? This action cannot be undone"
+    },
+    "messages_tips_textInput": {
+        "message": "Enter or paste text here, supports multiple lines"
+    },
+    "messages_tips_templateSelect": {
+        "message": "Choose a template as starting point, then customize styles"
+    },
+    "messages_tips_export": {
+        "message": "You can adjust image quality and size before exporting"
+    },
+    "messages_tips_zoom": {
+        "message": "Use Ctrl+Wheel to quickly zoom preview"
+    },
+    "messages_tips_shortcut": {
+        "message": "Shortcuts: Ctrl+S to save template, Ctrl+E to export image"
+    },
+    "export_title": {
+        "message": "Export Settings"
+    },
+    "export_format": {
+        "message": "Image Format"
+    },
+    "export_quality": {
+        "message": "Image Quality"
+    },
+    "export_scale": {
+        "message": "Scale"
+    },
+    "preview_text": {
+        "message": "Preview Text"
+    },
+    "preview_zoom_in": {
+        "message": "Zoom In"
+    },
+    "preview_zoom_out": {
+        "message": "Zoom Out"
+    },
+    "preview_zoom_reset": {
+        "message": "Reset"
+    },
+    "messages_error_type": {
+        "message": "Type error occurred"
+    },
+    "messages_error_reference": {
+        "message": "Reference error occurred"
+    },
+    "messages_error_network": {
+        "message": "Network error occurred"
+    },
+    "messages_error_security": {
+        "message": "Security error occurred"
+    },
+    "messages_error_required": {
+        "message": "This field is required"
+    },
+    "messages_error_tooShort": {
+        "message": "Input is too short"
+    },
+    "messages_error_tooLong": {
+        "message": "Input is too long"
+    },
+    "messages_error_invalidFormat": {
+        "message": "Invalid format"
+    }
+}

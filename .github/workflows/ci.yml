@@ -1,0 +1,86 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [ created ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run linting
+      run: npm run lint
+      
+    - name: Run unit tests
+      run: npm run test:ci
+      
+    - name: Run E2E tests
+      run: |
+        npm run build
+        npm run test:e2e
+      
+    - name: Upload coverage
+      uses: codecov/codecov-action@v2
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build
+      run: npm run build
+      
+    - name: Package extension
+      run: |
+        cd dist
+        zip -r ../quote-card-generator.zip *
+        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: extension-package
+        path: quote-card-generator.zip
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: extension-package
+        
+    - name: Publish to Chrome Web Store
+      uses: trmcnvn/chrome-addon@v2
+      with:
+        extension: ${{ secrets.EXTENSION_ID }}
+        zip: quote-card-generator.zip
+        client-id: ${{ secrets.CHROME_CLIENT_ID }}
+        client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+        refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }} 

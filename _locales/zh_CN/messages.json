@@ -1,0 +1,236 @@
+{
+    "extName": {
+        "message": "金句卡片生成器"
+    },
+    "extDesc": {
+        "message": "一键生成精美的金句卡片，支持多种模板和自定义样式。"
+    },
+    "menuTitle": {
+        "message": "生成金句卡片"
+    },
+    "inputPlaceholder": {
+        "message": "在此输入文字..."
+    },
+    "templates_title": {
+        "message": "选择模板"
+    },
+    "templates_simpleWhite": {
+        "message": "简约白"
+    },
+    "templates_elegantGray": {
+        "message": "优雅灰"
+    },
+    "templates_modernBlue": {
+        "message": "现代蓝"
+    },
+    "templates_vintageBeige": {
+        "message": "复古棕"
+    },
+    "templates_darkNight": {
+        "message": "暗夜黑"
+    },
+    "settings_title": {
+        "message": "样式设置"
+    },
+    "settings_background": {
+        "message": "背景"
+    },
+    "settings_backgroundType_solid": {
+        "message": "纯色"
+    },
+    "settings_backgroundType_gradient": {
+        "message": "渐变"
+    },
+    "settings_gradientType_linear": {
+        "message": "线性渐变"
+    },
+    "settings_gradientType_radial": {
+        "message": "径向渐变"
+    },
+    "settings_direction": {
+        "message": "方向"
+    },
+    "settings_direction_toRight": {
+        "message": "从左到右"
+    },
+    "settings_direction_toBottom": {
+        "message": "从上到下"
+    },
+    "settings_font": {
+        "message": "字体"
+    },
+    "settings_font_size": {
+        "message": "大小"
+    },
+    "settings_font_color": {
+        "message": "颜色"
+    },
+    "settings_font_weight": {
+        "message": "粗细"
+    },
+    "settings_font_weight_normal": {
+        "message": "正常"
+    },
+    "settings_font_weight_bold": {
+        "message": "粗体"
+    },
+    "settings_font_weight_light": {
+        "message": "细体"
+    },
+    "settings_font_lineHeight": {
+        "message": "行高"
+    },
+    "settings_font_letterSpacing": {
+        "message": "字间距"
+    },
+    "settings_font_decoration": {
+        "message": "装饰"
+    },
+    "settings_font_decoration_none": {
+        "message": "无"
+    },
+    "settings_font_decoration_underline": {
+        "message": "下划线"
+    },
+    "settings_font_decoration_lineThrough": {
+        "message": "删除线"
+    },
+    "settings_layout": {
+        "message": "布局"
+    },
+    "settings_layout_padding": {
+        "message": "边距"
+    },
+    "settings_layout_width": {
+        "message": "宽度"
+    },
+    "settings_layout_height": {
+        "message": "高度"
+    },
+    "settings_effects": {
+        "message": "特效"
+    },
+    "settings_effects_shadow": {
+        "message": "阴影"
+    },
+    "settings_effects_border": {
+        "message": "边框"
+    },
+    "settings_effects_border_style_solid": {
+        "message": "实线"
+    },
+    "settings_effects_border_style_dashed": {
+        "message": "虚线"
+    },
+    "settings_effects_border_style_dotted": {
+        "message": "点线"
+    },
+    "preview_text": {
+        "message": "预览文本"
+    },
+    "preview_zoom_in": {
+        "message": "放大"
+    },
+    "preview_zoom_out": {
+        "message": "缩小"
+    },
+    "preview_zoom_reset": {
+        "message": "重置"
+    },
+    "export_title": {
+        "message": "导出设置"
+    },
+    "export_format": {
+        "message": "图片格式"
+    },
+    "export_quality": {
+        "message": "图片质量"
+    },
+    "export_scale": {
+        "message": "缩放比例"
+    },
+    "buttons_export": {
+        "message": "导出图片"
+    },
+    "buttons_saveTemplate": {
+        "message": "保存模板"
+    },
+    "buttons_cancel": {
+        "message": "取消"
+    },
+    "buttons_confirm": {
+        "message": "确认"
+    },
+    "messages_success_export": {
+        "message": "导出成功！图片已保存到下载文件夹"
+    },
+    "messages_success_saveTemplate": {
+        "message": "模板保存成功！可以在模板列表中找到"
+    },
+    "messages_success_languageChanged": {
+        "message": "语言切换成功"
+    },
+    "messages_success_copied": {
+        "message": "文本已复制到剪贴板"
+    },
+    "messages_error_export": {
+        "message": "导出失败，请重试"
+    },
+    "messages_error_saveTemplate": {
+        "message": "保存模板失败，请重试"
+    },
+    "messages_error_compatibility": {
+        "message": "浏览器兼容性问题: $1"
+    },
+    "messages_error_storage": {
+        "message": "存储空间不足，请清理后重试"
+    },
+    "messages_error_general": {
+        "message": "发生错误，请重试"
+    },
+    "messages_prompt_templateName": {
+        "message": "请输入模板名称（不能为空）"
+    },
+    "messages_prompt_deleteTemplate": {
+        "message": "确定要删除这个模板吗？此操作不可撤销"
+    },
+    "messages_tips_textInput": {
+        "message": "在此输入或粘贴文字，支持多行文本"
+    },
+    "messages_tips_templateSelect": {
+        "message": "选择一个模板作为起点，然后自定义样式"
+    },
+    "messages_tips_export": {
+        "message": "导出前可以调整图片质量和尺寸"
+    },
+    "messages_tips_zoom": {
+        "message": "使用Ctrl+滚轮可以快速缩放预览"
+    },
+    "messages_tips_shortcut": {
+        "message": "快捷键：Ctrl+S 保存模板，Ctrl+E 导出图片"
+    },
+    "messages_error_type": {
+        "message": "类型错误"
+    },
+    "messages_error_reference": {
+        "message": "引用错误"
+    },
+    "messages_error_network": {
+        "message": "网络错误，请检查网络连接"
+    },
+    "messages_error_security": {
+        "message": "安全错误，请检查权限设置"
+    },
+    "messages_error_required": {
+        "message": "此字段不能为空"
+    },
+    "messages_error_tooShort": {
+        "message": "输入内容太短"
+    },
+    "messages_error_tooLong": {
+        "message": "输入内容太长"
+    },
+    "messages_error_invalidFormat": {
+        "message": "格式不正确"
+    }
+}
