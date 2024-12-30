@@ -267,4 +267,25 @@ await cardExporter.exportCard(element, {
 // 切换语言
 const i18n = new I18n();
 await i18n.changeLocale('en');
-``` 
+```
+
+## 消息类型
+
+### 内容脚本消息
+- `textSelected`: 文本选择事件
+- `generateCard`: 生成卡片请求
+- `openPopup`: 打开弹出窗口
+
+### 设置相关消息
+- `getSettings`: 获取设置
+- `saveSettings`: 保存设置
+
+## 错误处理
+所有消息响应都包含以下格式：
+```typescript
+interface Response {
+  success?: boolean;
+  error?: string;
+  data?: any;
+}
+```

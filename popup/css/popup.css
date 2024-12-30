@@ -1,0 +1,120 @@
+/* 导航栏样式 */
+.nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.nav-logo img {
+    width: 24px;
+    height: 24px;
+}
+
+.nav-title {
+    font-size: var(--font-size-lg);
+    font-weight: bold;
+}
+
+.nav-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+/* 工具栏样式 */
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tool-group {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.tool-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm);
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+.tool-btn:hover {
+    color: var(--primary-color);
+}
+
+/* 编辑区域样式 */
+.editor-container {
+    flex: 1;
+    padding: var(--spacing-md);
+    border-right: 1px solid var(--border-color);
+}
+
+.editor {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    padding: var(--spacing-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+}
+
+/* 预览区域样式 */
+.preview-container {
+    width: 300px;
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.preview {
+    flex: 1;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+}
+
+.preview-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.preview-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius-md);
+    background-color: var(--primary-color);
+    color: white;
+    cursor: pointer;
+}
+
+.preview-btn:hover {
+    opacity: 0.9;
+}
+
+/* 主要内容布局 */
+.main-content {
+    display: flex;
+    height: calc(100vh - 60px);
+}

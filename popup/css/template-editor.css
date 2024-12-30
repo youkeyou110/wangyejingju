@@ -1,0 +1,319 @@
+.template-editor {
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 编辑器区块样式 */
+.editor-section {
+    margin-bottom: 24px;
+}
+
+.editor-section h3 {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+/* 控件容器样式 */
+.background-controls,
+.font-controls,
+.layout-controls,
+.effects-controls {
+    display: grid;
+    grid-gap: 12px;
+    align-items: center;
+}
+
+/* 背景控件样式 */
+.background-controls {
+    grid-template-columns: 1fr auto;
+}
+
+#gradientControls {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    grid-gap: 12px;
+    padding: 12px;
+    background: #f5f5f5;
+    border-radius: 4px;
+}
+
+/* 字体控件样式 */
+.font-controls {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+/* 布局控件样式 */
+.layout-controls {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* 特效控件样式 */
+.effects-controls {
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+/* 输入控件通用样式 */
+.template-editor input,
+.template-editor select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.template-editor input:focus,
+.template-editor select:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    outline: none;
+}
+
+/* 特殊输入控件样式 */
+.template-editor input[type="color"] {
+    width: 40px;
+    height: 40px;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.template-editor input[type="number"] {
+    width: 80px;
+}
+
+/* 操作按钮样式 */
+.editor-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+}
+
+.editor-actions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+#saveTemplate {
+    background-color: #4a90e2;
+    color: white;
+}
+
+#saveTemplate:hover {
+    background-color: #357abd;
+}
+
+#cancelEdit {
+    background-color: #f5f5f5;
+    color: #666;
+}
+
+#cancelEdit:hover {
+    background-color: #e8e8e8;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+
+    .font-controls,
+    .layout-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .background-controls {
+        grid-template-columns: 1fr;
+    }
+
+    #gradientControls {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 工具提示样式 */
+.template-editor [title] {
+    position: relative;
+}
+
+.template-editor [title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 1000;
+}
+
+/* 导入按钮样式 */
+.import-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.import-button:hover {
+    background-color: #e8e8e8;
+}
+
+/* 缩放控件样式 */
+.zoom-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.zoom-button {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.zoom-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.zoom-value {
+    font-size: 12px;
+    color: #666;
+    min-width: 48px;
+    text-align: center;
+}
+
+/* 预览缩放动画 */
+.preview-content {
+    transform-origin: center;
+    transition: transform 0.2s;
+}
+
+/* 拖拽样式 */
+.template-editor.drag-over {
+    border: 2px dashed #4a90e2;
+    background-color: rgba(74, 144, 226, 0.05);
+}
+
+/* 网格控件样式 */
+.grid-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.grid-toggle {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.grid-toggle.active {
+    background-color: rgba(74, 144, 226, 0.2);
+}
+
+.grid-size {
+    width: 60px;
+    text-align: center;
+    padding: 4px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* 预览动画 */
+@keyframes previewFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes previewUpdate {
+    0% {
+        transform: scale(0.98);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.preview-content {
+    animation: previewFadeIn 0.3s ease-out;
+}
+
+.preview-content.updating {
+    animation: previewUpdate 0.2s ease-out;
+}
+
+/* 历史按钮样式 */
+.history-button {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.history-button:not(:disabled):hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.history-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.history-button svg {
+    fill: #666;
+}
+
+.history-button:not(:disabled):hover svg {
+    fill: #333;
+}

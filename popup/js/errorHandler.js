@@ -1,110 +1,124 @@
 class ErrorHandler {
-  constructor(i18n, toast) {
+  constructor(i18n) {
     this.i18n = i18n;
-    this.toast = toast;
+    this.errorLog = [];
+    this.maxLogSize = 100;
   }
 
-  // 处理通用错误
-  handleError(error, context = '') {
-    console.error(`[${context}]`, error);
+  handleError(error, source, context = {}) {
+    const errorInfo = {
+      timestamp: new Date().toISOString(),
+      source,
+      message: error.message,
+      stack: error.stack,
+      context,
+    };
 
-    // 记录错误日志
-    Utils.log(error.message, 'error');
+    // 记录错误
+    this.logError(errorInfo);
 
-    // 根据错误类型返回适当的消息
-    let message;
-    if (error instanceof TypeError) {
-      message = this.i18n.getMessage('messages_error_type');
-    } else if (error instanceof ReferenceError) {
-      message = this.i18n.getMessage('messages_error_reference');
-    } else if (error.name === 'QuotaExceededError') {
-      message = this.i18n.getMessage('messages_error_storage');
-    } else if (error.name === 'NetworkError') {
-      message = this.i18n.getMessage('messages_error_network');
-    } else if (error.name === 'SecurityError') {
-      message = this.i18n.getMessage('messages_error_security');
-    } else {
-      message = this.i18n.getMessage('messages_error_general');
-    }
+    // 上报错误
+    this.reportError(errorInfo);
 
-    // 显示错误提示
-    if (this.toast) {
-      this.toast.error(message);
-    } else {
-      alert(message);
-    }
+    // 显示错误消息
+    this.showErrorMessage(error, source);
 
-    return message;
+    // 记录到控制台
+    console.error('[ErrorHandler]', errorInfo);
   }
 
-  // 处理异步操作错误
-  async handleAsyncError(promise, context = '') {
+  logError(errorInfo) {
+    this.errorLog.unshift(errorInfo);
+
+    // 限制日志大小
+    if (this.errorLog.length > this.maxLogSize) {
+      this.errorLog.pop();
+    }
+
+    // 保存到本地存储
     try {
-      return await promise;
+      chrome.storage.local.set({
+        errorLog: this.errorLog
+      });
     } catch (error) {
-      this.handleError(error, context);
-      throw error; // 继续抛出错误以便上层处理
+      console.error('Failed to save error log:', error);
     }
   }
 
-  // 包装事件处理器
-  wrapEventHandler(handler, context = '') {
-    return async (...args) => {
-      try {
-        await handler(...args);
-      } catch (error) {
-        this.handleError(error, context);
+  async reportError(errorInfo) {
+    try {
+      const response = await fetch('https://api.example.com/error-report', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(errorInfo)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to report error');
       }
+    } catch (error) {
+      console.error('Failed to report error:', error);
+    }
+  }
+
+  showErrorMessage(error, source) {
+    let message = error.message;
+
+    // 使用国际化消息
+    if (error.code && this.i18n.getMessage(`error_${error.code}`)) {
+      message = this.i18n.getMessage(`error_${error.code}`);
+    } else if (this.i18n.getMessage(`error_${source}`)) {
+      message = this.i18n.getMessage(`error_${source}`);
+    }
+
+    // 显示错误通知
+    chrome.notifications.create({
+      type: 'basic',
+      iconUrl: 'assets/icon-48.png',
+      title: this.i18n.getMessage('error_title'),
+      message: message
+    });
+  }
+
+  async getErrorLog() {
+    try {
+      const data = await chrome.storage.local.get('errorLog');
+      return data.errorLog || [];
+    } catch (error) {
+      console.error('Failed to get error log:', error);
+      return [];
+    }
+  }
+
+  clearErrorLog() {
+    this.errorLog = [];
+    try {
+      chrome.storage.local.remove('errorLog');
+    } catch (error) {
+      console.error('Failed to clear error log:', error);
+    }
+  }
+
+  // 自定义错误类型
+  static get ErrorTypes() {
+    return {
+      NETWORK: 'network',
+      VALIDATION: 'validation',
+      PERMISSION: 'permission',
+      STORAGE: 'storage',
+      UNKNOWN: 'unknown'
     };
   }
 
-  // 验证输入
-  validateInput(value, rules = {}, context = '') {
-    const errors = [];
-
-    if (rules.required && !value) {
-      errors.push(this.i18n.getMessage('messages_error_required'));
-    }
-
-    if (rules.minLength && value.length < rules.minLength) {
-      errors.push(this.i18n.getMessage('messages_error_tooShort'));
-    }
-
-    if (rules.maxLength && value.length > rules.maxLength) {
-      errors.push(this.i18n.getMessage('messages_error_tooLong'));
-    }
-
-    if (rules.pattern && !rules.pattern.test(value)) {
-      errors.push(this.i18n.getMessage('messages_error_invalidFormat'));
-    }
-
-    if (errors.length > 0) {
-      const error = new Error(errors.join('\n'));
-      this.handleError(error, context);
-      return false;
-    }
-
-    return true;
-  }
-
-  showError(type, details = '') {
-    let message = '';
-    switch (type) {
-      case 'export':
-        message = chrome.i18n.getMessage('messages_error_export');
-        break;
-      case 'saveTemplate':
-        message = chrome.i18n.getMessage('messages_error_saveTemplate');
-        break;
-      case 'compatibility':
-        message = chrome.i18n.getMessage('messages_error_compatibility', [details]);
-        break;
-      case 'storage':
-        message = chrome.i18n.getMessage('messages_error_storage');
-        break;
-      default:
-        message = chrome.i18n.getMessage('messages_error_general');
-    }
-    // ... 显示错误消息
+  // 创建自定义错误
+  createError(type, message, code = null) {
+    const error = new Error(message);
+    error.type = type;
+    error.code = code;
+    return error;
   }
 }
+
+export default ErrorHandler;

@@ -1,67 +1,76 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
-  entry: {
-    popup: './popup/popup.js',
-    background: './background/background.js',
-    content: './content/content.js'
-  },
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name]/[name].js',
-    clean: true
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader'
-        }
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: '../'
+    entry: {
+        popup: ['./src/popup/popup.js', './src/popup/popup.css'],
+        background: './src/background/background.js',
+        content: ['./src/content/content.js', './src/content/content.css']
+    },
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].js'
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'postcss-loader'
+                ]
+            },
+            {
+                test: /\.(png|jpg|gif|svg)$/,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'images/[name][ext]'
+                }
             }
-          },
-          'css-loader',
-          'postcss-loader'
         ]
-      }
-    ]
-  },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: 'popup/popup.css'
-    }),
-    new CopyPlugin({
-      patterns: [
-        { from: 'manifest.json', to: 'manifest.json' },
-        { from: '_locales/en', to: '_locales/en' },
-        { from: '_locales/zh_CN', to: '_locales/zh_CN' },
-        { from: 'assets/*.png', to: 'assets/[name][ext]' },
-        { from: 'popup/popup.html', to: 'popup/popup.html' }
-      ]
-    })
-  ],
-  optimization: {
-    minimizer: [
-      new CssMinimizerPlugin(),
-      new TerserPlugin()
-    ]
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'popup/js')
-    }
-  }
+    },
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            template: './src/popup/popup.html',
+            filename: 'popup/popup.html',
+            chunks: ['popup']
+        }),
+        new CopyPlugin({
+            patterns: [
+                { from: 'src/manifest.json', to: 'manifest.json' },
+                { from: 'src/_locales', to: '_locales' },
+                { from: 'src/images', to: 'images' }
+            ]
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[name]/[name].css'
+        })
+    ],
+    optimization: {
+        minimizer: [
+            new TerserPlugin(),
+            new CssMinimizerPlugin()
+        ]
+    },
+    resolve: {
+        extensions: ['.js', '.json']
+    },
+    devtool: 'source-map'
 };

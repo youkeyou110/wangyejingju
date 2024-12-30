@@ -1,126 +1,92 @@
 class TemplateList {
-  constructor(templateManager, styleEditor, errorHandler) {
+  constructor(templateManager, container) {
     this.templateManager = templateManager;
-    this.styleEditor = styleEditor;
-    this.errorHandler = errorHandler;
-    this.container = document.getElementById('templateList');
-    this.i18n = i18n;
-    this.init();
+    this.container = container;
+    this.templates = [];
+    this.selectedTemplateId = null;
   }
 
   async init() {
-    await this.errorHandler.handleAsyncError(async () => {
-      await this.renderTemplates();
-      this.bindEvents();
-    }, 'TemplateList.init');
-  }
-
-  async renderTemplates() {
-    return this.errorHandler.handleAsyncError(async () => {
-      const templates = await this.templateManager.getAllTemplates();
-      this.container.innerHTML = templates.map(template => this.createTemplateCard(template)).join('');
-    }, 'TemplateList.renderTemplates');
-  }
-
-  createTemplateCard(template) {
-    const templateName = this.i18n.getMessage(`templates.${template.id}`) || template.name;
-    const deleteText = this.i18n.getMessage('buttons.delete');
-    
-    return `
-      <div class="template-card" data-template-id="${template.id}">
-        <div class="template-preview" style="
-          background: ${this.getBackgroundStyle(template.style.background)};
-          color: ${template.style.font.color};
-          font-family: ${template.style.font.family};
-          padding: 12px;
-          text-align: ${template.style.layout.textAlign};
-          box-shadow: ${template.style.effects.shadow};
-          border: ${template.style.effects.border};
-        ">
-          ${this.i18n.getMessage('preview.text')}
-        </div>
-        <div class="template-info">
-          <span class="template-name">${templateName}</span>
-          ${template.id.startsWith('custom_') ? 
-            `<button class="delete-template-btn" data-template-id="${template.id}">${deleteText}</button>` : 
-            ''}
-        </div>
-      </div>
-    `;
-  }
-
-  getBackgroundStyle(background) {
-    return background.type === 'color' ? background.value : background.value;
-  }
-
-  bindEvents() {
-    // 模板选择
-    const handleTemplateSelect = this.errorHandler.wrapEventHandler(async (e) => {
-      const templateCard = e.target.closest('.template-card');
-      if (templateCard) {
-        const templateId = templateCard.dataset.templateId;
-        const templates = await this.templateManager.getAllTemplates();
-        const template = templates.find(t => t.id === templateId);
-        if (template) {
-          this.styleEditor.loadStyle(template.style);
-          this.highlightSelectedTemplate(templateId);
-        }
-      }
-    }, 'templateSelect');
-
-    // 删除模板
-    const handleTemplateDelete = this.errorHandler.wrapEventHandler(async (e) => {
-      if (e.target.classList.contains('delete-template-btn')) {
-        const templateId = e.target.dataset.templateId;
-        
-        // 确认删除
-        if (!confirm(this.i18n.getMessage('messages.prompt.deleteTemplate'))) {
-          return;
-        }
-
-        await this.templateManager.deleteTemplate(templateId);
-        await this.renderTemplates();
-        this.toast.success(this.i18n.getMessage('messages.success.templateDeleted'));
-      }
-    }, 'templateDelete');
-
-    this.container.addEventListener('click', handleTemplateSelect);
-    this.container.addEventListener('click', handleTemplateDelete);
-  }
-
-  async addTemplate(template) {
-    return this.errorHandler.handleAsyncError(async () => {
-      // 验证模板数据
-      if (!this.validateTemplate(template)) {
-        return;
-      }
-
-      await this.templateManager.saveTemplate(template);
-      await this.renderTemplates();
-    }, 'TemplateList.addTemplate');
-  }
-
-  validateTemplate(template) {
-    return this.errorHandler.validateInput(template.name, {
-      required: true,
-      maxLength: 50,
-      pattern: /^[\w\u4e00-\u9fa5\s-]+$/  // 允许字母、数字、中文、空格和连字符
-    }, 'templateName');
-  }
-
-  highlightSelectedTemplate(templateId) {
     try {
-      this.container.querySelectorAll('.template-card').forEach(card => {
-        card.classList.toggle('selected', card.dataset.templateId === templateId);
-      });
+      // 获取所有模板
+      this.templates = await this.templateManager.getAllTemplates();
+
+      // 初始化预览容器
+      this.templateManager.initPreview(this.container);
+
+      // 渲染模板列表
+      await this.render();
+
+      // 绑定事件
+      this.bindEvents();
     } catch (error) {
-      this.errorHandler.handleError(error, 'TemplateList.highlightSelectedTemplate');
+      console.error('Failed to initialize template list:', error);
     }
   }
 
-  bindLanguageEvents() {
-    window.addEventListener('localeChanged', this.errorHandler.wrapEventHandler(async () => {
-      await this.renderTemplates();
-    }, 'languageChanged'));
+  async render() {
+    this.container.innerHTML = '';
+    this.container.className = 'template-list';
+
+    for (const template of this.templates) {
+      const previewElement = this.templateManager.generatePreview(template);
+      if (previewElement) {
+        // 添加操作按钮
+        const actions = document.createElement('div');
+        actions.className = 'template-actions';
+        actions.innerHTML = `
+          <button class="template-action-button" data-action="use">
+            ${chrome.i18n.getMessage('buttons_use')}
+          </button>
+          <button class="template-action-button" data-action="export">
+            ${chrome.i18n.getMessage('buttons_export')}
+          </button>
+          ${!template.id.startsWith('custom_') ? '' : `
+            <button class="template-action-button" data-action="delete">
+              ${chrome.i18n.getMessage('buttons_delete')}
+            </button>
+          `}
+        `;
+
+        previewElement.appendChild(actions);
+        this.container.appendChild(previewElement);
+      }
+    }
   }
-} 
+
+  bindEvents() {
+    this.container.addEventListener('click', async (e) => {
+      const button = e.target.closest('.template-action-button');
+      if (!button) return;
+
+      const preview = button.closest('.template-preview');
+      const templateId = preview.getAttribute('data-template-id');
+      const template = this.templates.find(t => t.id === templateId);
+
+      switch (button.dataset.action) {
+        case 'use':
+          this.selectTemplate(template);
+          break;
+        case 'export':
+          await this.templateManager.exportTemplate(template);
+          break;
+        case 'delete':
+          if (confirm(chrome.i18n.getMessage('messages_prompt_deleteTemplate'))) {
+            await this.templateManager.deleteTemplate(templateId);
+            await this.init(); // 重新加载列表
+          }
+          break;
+      }
+    });
+  }
+
+  selectTemplate(template) {
+    this.selectedTemplateId = template.id;
+    // 触发模板选择事件
+    this.container.dispatchEvent(new CustomEvent('templateSelected', {
+      detail: { template }
+    }));
+  }
+}
+
+export default TemplateList;

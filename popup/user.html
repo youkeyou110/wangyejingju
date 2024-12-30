@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户中心 - 金句卡片生成器</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/user.css">
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="nav-bar">
+        <div class="nav-logo">
+            <button class="back-btn" id="backBtn">
+                <i class="icon-back"></i>
+            </button>
+            <span class="nav-title" data-i18n="user.center">用户中心</span>
+        </div>
+    </nav>
+
+    <!-- 用户信息 -->
+    <header class="user-header">
+        <div class="user-avatar">
+            <img src="images/default-avatar.png" alt="User avatar">
+            <button class="edit-avatar">
+                <i class="icon-edit"></i>
+            </button>
+        </div>
+        <div class="user-info">
+            <h2 class="username">用户名</h2>
+            <p class="user-meta">
+                <span class="join-date">加入于 2024-03-01</span>
+                <span class="template-count">10 个模板</span>
+            </p>
+        </div>
+    </header>
+
+    <!-- 主要内容 -->
+    <main class="user-content">
+        <!-- 标签页导航 -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="templates" data-i18n="user.templates">我的模板</button>
+            <button class="tab-btn" data-tab="favorites" data-i18n="user.favorites">收藏夹</button>
+            <button class="tab-btn" data-tab="history" data-i18n="user.history">使用记录</button>
+        </div>
+
+        <!-- 标签页内容 -->
+        <div class="tab-content">
+            <!-- 我的模板 -->
+            <div class="tab-pane active" id="templates">
+                <div class="template-grid">
+                    <!-- 模板卡片 -->
+                    <div class="template-card">
+                        <div class="template-preview">
+                            <img src="images/template-preview.jpg" alt="Template preview">
+                            <div class="template-actions">
+                                <button class="edit-btn">
+                                    <i class="icon-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="icon-delete"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <h3 class="template-name">我的模板</h3>
+                            <div class="template-meta">
+                                <span class="create-time">2024-03-01</span>
+                                <div class="stats">
+                                    <span class="downloads">
+                                        <i class="icon-download"></i>
+                                        1.2k
+                                    </span>
+                                    <span class="rating">
+                                        <i class="icon-star"></i>
+                                        4.8
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 收藏夹 -->
+            <div class="tab-pane" id="favorites">
+                <div class="template-grid">
+                    <!-- 收藏的模板... -->
+                </div>
+            </div>
+
+            <!-- 使用记录 -->
+            <div class="tab-pane" id="history">
+                <div class="history-list">
+                    <!-- 使用记录项 -->
+                    <div class="history-item">
+                        <div class="history-preview">
+                            <img src="images/history-preview.jpg" alt="History preview">
+                        </div>
+                        <div class="history-info">
+                            <div class="history-header">
+                                <h3 class="history-title">使用了模板"简约金句"</h3>
+                                <span class="history-time">2024-03-01 14:30</span>
+                            </div>
+                            <p class="history-content">生成了一张金句卡片</p>
+                            <div class="history-actions">
+                                <button class="btn">
+                                    <i class="icon-reuse"></i>
+                                    <span data-i18n="reuse">重新使用</span>
+                                </button>
+                                <button class="btn">
+                                    <i class="icon-share"></i>
+                                    <span data-i18n="share">分享</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/user.js" type="module"></script>
+</body>
+
+</html>

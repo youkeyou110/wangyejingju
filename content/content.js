@@ -5,7 +5,7 @@ document.addEventListener('mouseup', function(event) {
   if (selectedText) {
     // 向background发送选中的文本
     chrome.runtime.sendMessage({
-      type: 'TEXT_SELECTED',
+      action: 'textSelected',
       text: selectedText
     });
   }
@@ -18,7 +18,7 @@ document.addEventListener('keydown', (e) => {
     const selectedText = window.getSelection().toString().trim();
     if (selectedText) {
       chrome.runtime.sendMessage({
-        type: 'GENERATE_CARD',
+        action: 'generateCard',
         text: selectedText
       });
     }
@@ -27,10 +27,10 @@ document.addEventListener('keydown', (e) => {
 
 // 监听来自后台脚本的消息
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === 'GENERATE_CARD') {
+  if (message.action === 'generateCard') {
     // 打开弹出窗口并传递选中的文本
     chrome.runtime.sendMessage({
-      type: 'OPEN_POPUP',
+      action: 'openPopup',
       text: message.text
     });
   }

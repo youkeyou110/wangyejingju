@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模板市场 - 金句卡片生成器</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/market.css">
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="nav-bar">
+        <div class="nav-logo">
+            <button class="back-btn" id="backBtn">
+                <i class="icon-back"></i>
+            </button>
+            <span class="nav-title" data-i18n="market">模板市场</span>
+        </div>
+        <div class="nav-actions">
+            <button class="upload-btn" id="uploadBtn">
+                <i class="icon-upload"></i>
+                <span data-i18n="upload">上传模板</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 搜索栏 -->
+    <div class="search-bar">
+        <div class="search-input">
+            <i class="icon-search"></i>
+            <input type="text" placeholder="搜索模板..." data-i18n="search.placeholder">
+        </div>
+        <div class="filter-group">
+            <select class="input" id="categorySelect">
+                <option value="" data-i18n="filter.all">全部分类</option>
+                <option value="quote">名言金句</option>
+                <option value="poetry">诗词歌赋</option>
+                <option value="prose">散文美句</option>
+            </select>
+            <select class="input" id="sortSelect">
+                <option value="popular" data-i18n="sort.popular">最受欢迎</option>
+                <option value="newest" data-i18n="sort.newest">最新发布</option>
+                <option value="downloads" data-i18n="sort.downloads">下载最多</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- 模板列表 -->
+    <main class="market-content">
+        <div class="template-grid">
+            <!-- 模板卡片 -->
+            <div class="template-card">
+                <div class="template-preview">
+                    <img src="images/template-preview.jpg" alt="Template preview">
+                    <div class="template-actions">
+                        <button class="preview-btn">
+                            <i class="icon-eye"></i>
+                        </button>
+                        <button class="download-btn">
+                            <i class="icon-download"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="template-info">
+                    <h3 class="template-name">简约金句</h3>
+                    <div class="template-meta">
+                        <span class="author">by 设计师小明</span>
+                        <div class="stats">
+                            <span class="downloads">
+                                <i class="icon-download"></i>
+                                1.2k
+                            </span>
+                            <span class="rating">
+                                <i class="icon-star"></i>
+                                4.8
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 更多模板卡片... -->
+        </div>
+
+        <!-- 分页 -->
+        <div class="pagination">
+            <button class="page-btn" disabled>
+                <i class="icon-left"></i>
+            </button>
+            <span class="page-info">1 / 10</span>
+            <button class="page-btn">
+                <i class="icon-right"></i>
+            </button>
+        </div>
+    </main>
+
+    <!-- 上传模板对话框 -->
+    <div class="dialog" id="uploadDialog" hidden>
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <h3 class="dialog-title" data-i18n="upload.title">上传模板</h3>
+                <button class="dialog-close">&times;</button>
+            </div>
+            <div class="dialog-body">
+                <form id="uploadForm">
+                    <div class="form-group">
+                        <label data-i18n="upload.name">模板名称</label>
+                        <input type="text" class="input" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="upload.category">分类</label>
+                        <select class="input" required>
+                            <option value="quote">名言金句</option>
+                            <option value="poetry">诗词歌赋</option>
+                            <option value="prose">散文美句</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="upload.description">描述</label>
+                        <textarea class="input" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="upload.preview">预览图</label>
+                        <div class="upload-preview">
+                            <input type="file" accept="image/*" required>
+                            <div class="preview-placeholder">
+                                <i class="icon-image"></i>
+                                <span data-i18n="upload.dragHint">拖放图片或点击上传</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="upload.template">模板文件</label>
+                        <input type="file" accept=".json" required>
+                    </div>
+                </form>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn" data-action="cancel" data-i18n="cancel">取消</button>
+                <button class="btn primary" data-action="upload" data-i18n="upload">上传</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/market.js" type="module"></script>
+</body>
+
+</html>

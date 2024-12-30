@@ -1,21 +1,10 @@
-// 模拟 Chrome API
-global.chrome = {
-  storage: {
-    local: {
-      get: jest.fn(),
-      set: jest.fn(),
-      remove: jest.fn()
-    }
-  },
-  runtime: {
-    sendMessage: jest.fn(),
-    onMessage: {
-      addListener: jest.fn()
-    }
-  }
-};
+import { chrome } from 'jest-chrome';
+global.chrome = chrome;
 
-// 模拟 DOM API
-global.HTMLCanvasElement.prototype.getContext = () => ({
-  drawImage: jest.fn()
-}); 
+// Mock fetch
+global.fetch = jest.fn(() =>
+    Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({})
+    })
+);

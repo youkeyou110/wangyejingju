@@ -1,12 +1,12 @@
 module.exports = {
   testEnvironment: 'jsdom',
-  setupFiles: ['<rootDir>/tests/setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/popup/js/$1'
   },
   collectCoverageFrom: [
     'popup/js/**/*.js',
-    '!popup/js/vendor/**'
+    '!popup/js/vendor/**/*.js'
   ],
   coverageThreshold: {
     global: {
@@ -28,4 +28,4 @@ module.exports = {
     '/dist/',
     '/tests/e2e/'
   ]
-}; 
+};

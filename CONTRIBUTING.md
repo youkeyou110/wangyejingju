@@ -1,192 +1,137 @@
 # 贡献指南
 
-感谢您有兴趣为金句卡片生成器做出贡献！
-
-## 目录
-
-- [行为准则](#行为准则)
-- [开始之前](#开始之前)
-- [开发流程](#开发流程)
-- [提交指南](#提交指南)
-- [开发规范](#开发规范)
-- [测试指南](#测试指南)
+感谢你考虑为金句卡片生成器做出贡献！以下是一些指导原则和建议。
 
 ## 行为准则
 
-本项目采用 [Contributor Covenant](https://www.contributor-covenant.org/) 行为准则。参与本项目即表示您同意遵守其条款。
+本项目采用 [Contributor Covenant](https://www.contributor-covenant.org/) 行为准则。通过参与，你同意遵守其中的条款。
 
-## 开始之前
+## 如何贡献
 
-1. Fork 本仓库
-2. Clone 到本地
-3. 安装依赖
+### 报告 Bug
+
+1. 使用 GitHub Issues 搜索确认该 bug 尚未被报告
+2. 如果找不到相关 issue，创建一个新的
+3. 使用 bug 报告模板，提供以下信息：
+   - 清晰的问题描述
+   - 复现步骤
+   - 预期行为
+   - 实际行为
+   - 截图（如果适用）
+   - 环境信息
+
+### 提出新功能
+
+1. 先在 Issues 中讨论新功能的必要性
+2. 说明新功能将如何帮助用户
+3. 提供可能的实现方案
+4. 等待维护者的反馈
+
+### 提交代码
+
+1. Fork 项目
+2. 创建特性分支
    ```bash
-   npm install
+   git checkout -b feature/your-feature-name
    ```
-4. 创建新分支
+3. 编写代码，遵循项目的代码规范
+4. 编写测试用例
+5. 提交代码
    ```bash
-   git checkout -b feature/your-feature
+   git commit -m "feat: add some feature"
    ```
+6. 推送到你的 Fork
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+7. 创建 Pull Request
 
 ## 开发流程
 
-1. 确保您的代码符合我们的编码规范
-2. 编写/更新测试
-3. 确保所有测试通过
-4. 提交代码
-5. 推送到您的 Fork
-6. 创建 Pull Request
+### 环境设置
 
-### 本地开发
+1. 安装依赖
+   ```bash
+   npm install
+   ```
 
-```bash
-# 启动开发服务器
-npm run dev
+2. 启动开发服务器
+   ```bash
+   npm run dev
+   ```
 
-# 运行测试
-npm test
+3. 运行测试
+   ```bash
+   npm test
+   ```
 
-# 构建生产版本
-npm run build
+### 代码规范
+
+- 使用 ESLint 和 Prettier 保持代码风格一致
+- 遵循 [Angular Commit Message Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit)
+- 保持代码简洁，遵循 SOLID 原则
+- 编写清晰的注释和文档
+
+### 测试要求
+
+- 所有新功能必须包含测试用例
+- 保持测试覆盖率在 80% 以上
+- 运行所有测试并确保通过
+- 包含单元测试和集成测试
+
+## 文档贡献
+
+### 文档结构
+
 ```
-
-## 提交指南
-
-### 分支命名
-
-- 功能分支: `feature/your-feature`
-- 修复分支: `fix/issue-description`
-- 文档分支: `docs/what-you-modified`
-
-### 提交消息格式
-
-��们使用 [Conventional Commits](https://www.conventionalcommits.org/) 规范：
-
+docs/
+├── api/           # API 文档
+├── guides/        # 使用指南
+├── contributing/  # 贡献指南
+└── examples/      # 示例代码
 ```
-<type>(<scope>): <subject>
-
-<body>
-
-<footer>
-```
-
-类型（type）：
-- feat: 新功能
-- fix: 修复
-- docs: 文档更新
-- style: 代码格式（不影响代码运行的变动）
-- refactor: 重构
-- perf: 性能优化
-- test: 测试
-- chore: 构建过程或辅助工具的变动
-
-示例：
-```
-feat(template): add new template system
-
-- Add template manager
-- Add template validation
-- Update tests
-
-Closes #123
-```
-
-### Pull Request 规范
-
-1. PR 标题应简洁明了
-2. 描述中应包含：
-   - 解决的问题
-   - 实现方案
-   - 可能的影响
-3. 确保所有检查都通过
-4. 及时响应 review 意见
-
-## 开发规范
-
-### 代码风格
-
-我们使用 ESLint 和 Prettier 来保证代码质量：
-
-```bash
-# 检查代码风格
-npm run lint
-
-# 自动修复
-npm run lint:fix
-```
-
-### JavaScript 规范
-
-- 使用 ES6+ 特性
-- 优先使用 const/let
-- 使用异步/await 处理异步
-- 添加适当的注释
-
-### CSS 规范
-
-- 使用 BEM 命名规范
-- 避免深层嵌套
-- 使用 CSS 变量
-- 保持可维护性
 
 ### 文档规范
 
 - 使用 Markdown 格式
-- 保持文档最新
-- 添加适当的示例
-- 使用清晰的结构
-
-## 测试指南
-
-### 单元测试
-
-- 每个组件都应有对应的测���
-- 测试覆盖率要求 > 80%
-- 使用有意义的测试描述
-
-```bash
-# 运行单元测试
-npm test
-
-# 查看覆盖率报告
-npm run test:coverage
-```
-
-### 集成测试
-
-- 测试组件间交互
-- 测试主要用户流程
-- 模拟真实场景
-
-### E2E 测试
-
-- 测试完整功能流程
-- 验证用户界面交互
-- 检查性能指标
-
-## 性能要求
-
-- 首次加载时间 < 2s
-- 操作响应时间 < 100ms
-- 内存占用 < 50MB
-- 导出耗时 < 1s
+- 包含清晰的标题和目录
+- 提供代码示例
+- 包含必要的截图
+- 保持文档的及时更新
 
 ## 发布流程
 
-1. 更新版本号
-   ```bash
-   npm version patch|minor|major
-   ```
+1. 版本号规范
+   - 遵循 [Semantic Versioning](https://semver.org/)
+   - 主版本号：不兼容的 API 修改
+   - 次版本号：向下兼容的功能性新增
+   - 修订号：向下兼容的问题修正
 
-2. 更新 CHANGELOG.md
-3. 创建发布标签
-4. 构建生产版本
-5. 发布到 Chrome 网上应用店
+2. 更新日志
+   - 在 CHANGELOG.md 中记录所有更改
+   - 按版本号分类
+   - 包含变更类型（新功能、修复、改进等）
 
-## 获取帮助
+3. 发布检查清单
+   - 所有测试通过
+   - 文档已更新
+   - 更新日志已添加
+   - 版本号已更新
+   - 代码审查已完成
 
-- 查看 [文档](docs/)
-- 提交 [Issue](../../issues)
-- 加入讨论组
+## 社区参与
 
-再次感谢您的贡献！ 
+- 参与 Issues 讨论
+- 帮助回答其他用户的问题
+- 改进文档
+- 分享使用经验
+- 推广项目
+
+## 获得帮助
+
+- 查阅 [文档](docs/)
+- 在 [Issues](https://github.com/your-username/quote-card-generator/issues) 中提问
+- 发送邮件到 your-email@example.com
+- 加入我们的微信群
+
+感谢你的贡献！

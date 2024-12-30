@@ -1,0 +1,70 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.settings-container {
+    width: 400px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 24px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: var(--text-color);
+}
+
+.section {
+    margin-bottom: 24px;
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.control-group label {
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: var(--text-color);
+}
+
+.control-group select,
+.control-group input {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn.primary:hover {
+    opacity: 0.9;
+}

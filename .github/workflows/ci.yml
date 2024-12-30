@@ -2,37 +2,42 @@ name: CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
   release:
     types: [ created ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js
+
+    - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
-        node-version: '16.x'
+        node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    
+
     - name: Install dependencies
       run: npm ci
-      
-    - name: Run linting
+
+    - name: Run linter
       run: npm run lint
-      
+
     - name: Run unit tests
-      run: npm run test:ci
-      
+      run: npm run test:coverage
+
     - name: Run E2E tests
       run: |
         npm run build
         npm run test:e2e
-      
+
     - name: Upload coverage
       uses: codecov/codecov-action@v2
 
@@ -40,47 +45,56 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
+
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Use Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '16.x'
+        node-version: '18.x'
         cache: 'npm'
-    
+
     - name: Install dependencies
       run: npm ci
-      
+
     - name: Build
       run: npm run build
-      
+
     - name: Package extension
       run: |
         cd dist
-        zip -r ../quote-card-generator.zip *
-        
+        zip -r ../extension.zip *
+
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: extension-package
-        path: quote-card-generator.zip
+        path: extension.zip
 
-  publish:
+  deploy:
     needs: build
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
+
     steps:
     - name: Download artifact
       uses: actions/download-artifact@v2
       with:
         name: extension-package
-        
-    - name: Publish to Chrome Web Store
+
+    - name: Deploy to Chrome Web Store
       uses: trmcnvn/chrome-addon@v2
       with:
         extension: ${{ secrets.EXTENSION_ID }}
-        zip: quote-card-generator.zip
+        zip: extension.zip
         client-id: ${{ secrets.CHROME_CLIENT_ID }}
         client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
-        refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }} 
+        refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: extension.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
