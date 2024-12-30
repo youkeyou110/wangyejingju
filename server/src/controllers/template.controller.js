@@ -1,10 +1,18 @@
 const Template = require('../models/template.model');
 const User = require('../models/user.model');
+const StorageService = require('../services/storage.service');
+const VersionService = require('../services/version.service');
 
 class TemplateController {
     // 创建模板
     async createTemplate(req, res) {
         try {
+            // 处理缩略图上传
+            if (req.file) {
+                const result = await StorageService.uploadFile(req.file);
+                req.body.thumbnail = result.url;
+            }
+
             const template = new Template({
                 ...req.body,
                 author: req.userId
@@ -159,6 +167,81 @@ class TemplateController {
             res.status(500).json({
                 success: false,
                 message: '操作失败',
+                error: error.message
+            });
+        }
+    }
+
+    // 获取版本历史
+    async getVersionHistory(req, res) {
+        try {
+            const { templateId } = req.params;
+            const { page, limit } = req.query;
+
+            const history = await VersionService.getVersionHistory(
+                templateId,
+                parseInt(page),
+                parseInt(limit)
+            );
+
+            res.json({
+                success: true,
+                data: history
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: '获取版本历史失败',
+                error: error.message
+            });
+        }
+    }
+
+    // 回滚到指定版本
+    async rollbackVersion(req, res) {
+        try {
+            const { templateId, version } = req.params;
+
+            const newVersion = await VersionService.rollbackToVersion(
+                templateId,
+                parseInt(version),
+                req.userId
+            );
+
+            res.json({
+                success: true,
+                message: '回滚成功',
+                data: newVersion
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: '版本回滚失败',
+                error: error.message
+            });
+        }
+    }
+
+    // 比较版本差异
+    async compareVersions(req, res) {
+        try {
+            const { templateId } = req.params;
+            const { version1, version2 } = req.query;
+
+            const diff = await VersionService.compareVersions(
+                templateId,
+                parseInt(version1),
+                parseInt(version2)
+            );
+
+            res.json({
+                success: true,
+                data: diff
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: '版本比较失败',
                 error: error.message
             });
         }

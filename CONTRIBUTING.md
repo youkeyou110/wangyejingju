@@ -1,137 +1,169 @@
 # 贡献指南
 
-感谢你考虑为金句卡片生成器做出贡献！以下是一些指导原则和建议。
-
-## 行为准则
-
-本项目采用 [Contributor Covenant](https://www.contributor-covenant.org/) 行为准则。通过参与，你同意遵守其中的条款。
-
-## 如何贡献
-
-### 报告 Bug
-
-1. 使用 GitHub Issues 搜索确认该 bug 尚未被报告
-2. 如果找不到相关 issue，创建一个新的
-3. 使用 bug 报告模板，提供以下信息：
-   - 清晰的问题描述
-   - 复现步骤
-   - 预期行为
-   - 实际行为
-   - 截图（如果适用）
-   - 环境信息
-
-### 提出新功能
-
-1. 先在 Issues 中讨论新功能的必要性
-2. 说明新功能将如何帮助用户
-3. 提供可能的实现方案
-4. 等待维护者的反馈
-
-### 提交代码
-
-1. Fork 项目
-2. 创建特性分支
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-3. 编写代码，遵循项目的代码规范
-4. 编写测试用例
-5. 提交代码
-   ```bash
-   git commit -m "feat: add some feature"
-   ```
-6. 推送到你的 Fork
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-7. 创建 Pull Request
+感谢你考虑为 Quote Card Generator 做出贡献！
 
 ## 开发流程
 
-### 环境设置
-
-1. 安装依赖
-   ```bash
-   npm install
-   ```
-
-2. 启动开发服务器
-   ```bash
-   npm run dev
-   ```
-
-3. 运行测试
-   ```bash
-   npm test
-   ```
-
-### 代码规范
-
-- 使用 ESLint 和 Prettier 保持代码风格一致
-- 遵循 [Angular Commit Message Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit)
-- 保持代码简洁，遵循 SOLID 原则
-- 编写清晰的注释和文档
-
-### 测试要求
-
-- 所有新功能必须包含测试用例
-- 保持测试覆盖率在 80% 以上
-- 运行所有测试并确保通过
-- 包含单元测试和集成测试
-
-## 文档贡献
-
-### 文档结构
-
-```
-docs/
-├── api/           # API 文档
-├── guides/        # 使用指南
-├── contributing/  # 贡献指南
-└── examples/      # 示例代码
+1. Fork 项目并克隆到本地
+```bash
+git clone https://github.com/your-username/quote-card-generator.git
+cd quote-card-generator
 ```
 
-### 文档规范
+2. 创建新分支
+```bash
+git checkout -b feature/your-feature-name
+```
 
-- 使用 Markdown 格式
-- 包含清晰的标题和目录
-- 提供代码示例
-- 包含必要的截图
-- 保持文档的及时更新
+3. 安装依赖
+```bash
+# 前端依赖
+npm install
 
-## 发布流程
+# 后端依赖
+cd server
+npm install
+```
 
-1. 版本号规范
-   - 遵循 [Semantic Versioning](https://semver.org/)
-   - 主版本号：不兼容的 API 修改
-   - 次版本号：向下兼容的功能性新增
-   - 修订号：向下兼容的问题修正
+4. 进行开发
+- 遵循代码规范
+- 添加必要的测试
+- 保持提交信息清晰
 
-2. 更新日志
-   - 在 CHANGELOG.md 中记录所有更改
-   - 按版本号分类
-   - 包含变更类型（新功能、修复、改进等）
+5. 运行测试
+```bash
+# 前端测试
+npm test
 
-3. 发布检查清单
-   - 所有测试通过
-   - 文档已更新
-   - 更新日志已添加
-   - 版本号已更新
-   - 代码审查已完成
+# 后端测试
+cd server
+npm test
+```
 
-## 社区参与
+6. 提交代码
+```bash
+git add .
+git commit -m "feat: add some feature"
+git push origin feature/your-feature-name
+```
 
-- 参与 Issues 讨论
-- 帮助回答其他用户的问题
-- 改进文档
-- 分享使用经验
-- 推广项目
+## 提交规范
 
-## 获得帮助
+我们使用 [Conventional Commits](https://www.conventionalcommits.org/) 规范：
 
-- 查阅 [文档](docs/)
-- 在 [Issues](https://github.com/your-username/quote-card-generator/issues) 中提问
-- 发送邮件到 your-email@example.com
-- 加入我们的微信群
+- `feat`: 新功能
+- `fix`: 修复问题
+- `docs`: 文档更新
+- `style`: 代码格式调整
+- `refactor`: 代码重构
+- `test`: 测试相关
+- `chore`: 构建/工具相关
 
-感谢你的贡献！
+示例：
+```
+feat: 添加模板预览功能
+fix: 修复图片导出失败问题
+docs: 更新 API 文档
+```
+
+## 代码规范
+
+### JavaScript
+
+- 使用 ES6+ 语法
+- 遵循 ESLint 配置
+- 使用 2 空格缩进
+- 使用分号结尾
+- 优先使用 const/let
+
+### CSS
+
+- 使用 CSS Variables
+- 采用 BEM 命名规范
+- 保持选择器简洁
+- 避免使用 !important
+
+### 测试
+
+- 单元测试覆盖率 > 80%
+- 编写有意义的测试描述
+- 测试文件与源文件同名
+- 使用合适的断言
+
+## Pull Request 流程
+
+1. 确保 PR 标题符合提交规范
+2. 填写完整的 PR 描述
+3. 关联相关 Issue
+4. 通过所有自动化测试
+5. 等待代码审查
+6. 根据反馈进行修改
+7. 等待合并
+
+## 开发环境
+
+- Node.js >= 14
+- npm >= 6
+- Chrome >= 88
+- MongoDB >= 4.4
+
+## 项目结构说明
+
+```
+quote-card-generator/
+├── src/                    # 前端源码
+│   ├── popup/             # 弹出窗口
+│   │   ├── components/    # UI组件
+│   │   ├── styles/        # 样式文件
+│   │   └── utils/         # 工具函数
+│   ├── background/        # 后台脚本
+│   ├── content/           # 内容脚本
+│   └── templates/         # 模板系统
+├── server/                # 后端服务
+│   ├── src/              # 服务器源码
+│   │   ├── controllers/  # 控制器
+│   │   ├── models/       # 数据模型
+│   │   ├── routes/       # 路由
+│   │   └── middleware/   # 中间件
+│   ├── tests/            # 测试用例
+│   └── docs/             # API文档
+└── docs/                  # 项目文档
+```
+
+## 常见问题
+
+### 如何调试
+
+1. 前端调试
+   - 使用 Chrome DevTools
+   - 查看 Console 输出
+   - 使用 Vue DevTools
+
+2. 后端调试
+   - 使用 VS Code Debugger
+   - 查看日志输出
+   - 使用 Postman 测试 API
+
+### 开发建议
+
+1. 功能开发
+   - 先写测试用例
+   - 保持功能独立
+   - 考虑边界情况
+   - 添加错误处理
+
+2. 性能优化
+   - 减少 DOM 操作
+   - 优化图片加载
+   - 使用缓存机制
+   - 避免内存泄漏
+
+## 联系方式
+
+- Issue 讨论：[GitHub Issues](https://github.com/your-username/quote-card-generator/issues)
+- 邮件联系：your-email@example.com
+- 开发群：[Telegram Group](https://t.me/quote_card_dev)
+
+## 许可证
+
+贡献代码时，你同意将代码按照项目的 MIT 许可证开源。

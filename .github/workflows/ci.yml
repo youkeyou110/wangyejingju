@@ -1,19 +1,19 @@
-name: CI/CD
+name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, develop ]
-  release:
-    types: [ created ]
+    branches: [ main ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [14.x, 16.x]
+        mongodb-version: [4.4]
 
     steps:
     - uses: actions/checkout@v2
@@ -24,27 +24,32 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    - name: Install dependencies
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.7.0
+      with:
+        mongodb-version: ${{ matrix.mongodb-version }}
+
+    - name: Install frontend dependencies
       run: npm ci
 
-    - name: Run linter
-      run: npm run lint
+    - name: Run frontend tests
+      run: npm test
 
-    - name: Run unit tests
-      run: npm run test:coverage
-
-    - name: Run E2E tests
+    - name: Install backend dependencies
       run: |
-        npm run build
-        npm run test:e2e
+        cd server
+        npm ci
 
-    - name: Upload coverage
-      uses: codecov/codecov-action@v2
+    - name: Run backend tests
+      run: |
+        cd server
+        npm test
 
-  build:
-    needs: test
+    - name: Build frontend
+      run: npm run build
+
+  lint:
     runs-on: ubuntu-latest
-    if: github.event_name == 'release'
 
     steps:
     - uses: actions/checkout@v2
@@ -52,49 +57,44 @@ jobs:
     - name: Use Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '18.x'
+        node-version: '16.x'
         cache: 'npm'
 
     - name: Install dependencies
-      run: npm ci
-
-    - name: Build
-      run: npm run build
-
-    - name: Package extension
       run: |
-        cd dist
-        zip -r ../extension.zip *
+        npm ci
+        cd server
+        npm ci
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: extension-package
-        path: extension.zip
+    - name: Run ESLint
+      run: |
+        npm run lint
+        cd server
+        npm run lint
 
-  deploy:
-    needs: build
+  coverage:
     runs-on: ubuntu-latest
-    if: github.event_name == 'release'
 
     steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: extension-package
+    - uses: actions/checkout@v2
 
-    - name: Deploy to Chrome Web Store
-      uses: trmcnvn/chrome-addon@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v2
       with:
-        extension: ${{ secrets.EXTENSION_ID }}
-        zip: extension.zip
-        client-id: ${{ secrets.CHROME_CLIENT_ID }}
-        client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
-        refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
+        node-version: '16.x'
+        cache: 'npm'
 
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: extension.zip
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Install dependencies
+      run: |
+        npm ci
+        cd server
+        npm ci
+
+    - name: Run coverage
+      run: |
+        npm run test:coverage
+        cd server
+        npm run test:coverage
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v2
