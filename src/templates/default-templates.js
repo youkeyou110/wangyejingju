@@ -1,35 +1,59 @@
-export const defaultTemplates = [
+const defaultTemplates = [
     {
         id: 'simple',
-        name: '简约',
-        description: '简洁大方的设计风格',
+        name: '简约模板',
         thumbnail: 'images/templates/simple.png',
-        author: 'System',
         style: {
             background: '#ffffff',
             color: '#333333',
-            fontFamily: 'inherit',
-            fontSize: '24px'
+            font: 'Arial',
+            fontSize: '16px',
+            padding: '20px'
         },
         content: {
-            layout: 'center'
+            quote: {
+                style: {
+                    fontSize: '24px',
+                    fontWeight: 'bold',
+                    marginBottom: '10px'
+                }
+            },
+            author: {
+                style: {
+                    fontSize: '16px',
+                    fontStyle: 'italic'
+                }
+            }
         }
     },
     {
-        id: 'elegant',
-        name: '优雅',
-        description: '典雅精致的设计风格',
-        thumbnail: 'images/templates/elegant.png',
-        author: 'System',
+        id: 'dark',
+        name: '深色模板',
+        thumbnail: 'images/templates/dark.png',
         style: {
-            background: '#f8f9fa',
-            color: '#2c3e50',
-            fontFamily: 'Georgia, serif',
-            fontSize: '26px',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+            background: '#2c2c2c',
+            color: '#ffffff',
+            font: 'Helvetica',
+            fontSize: '16px',
+            padding: '20px'
         },
         content: {
-            layout: 'center'
+            quote: {
+                style: {
+                    fontSize: '24px',
+                    fontWeight: 'bold',
+                    marginBottom: '10px'
+                }
+            },
+            author: {
+                style: {
+                    fontSize: '16px',
+                    fontStyle: 'italic',
+                    color: '#cccccc'
+                }
+            }
         }
     }
 ];
+
+export default defaultTemplates;

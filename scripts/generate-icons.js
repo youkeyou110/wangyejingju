@@ -2,9 +2,9 @@ const sharp = require('sharp');
 const fs = require('fs').promises;
 const path = require('path');
 
-const sizes = [16, 32, 48, 128];
-const inputFile = path.join(__dirname, '../src/images/icon.svg');
-const outputDir = path.join(__dirname, '../src/images');
+const sizes = [16, 48, 128];
+const sourceIcon = path.join(__dirname, '../src/icons/icon.png');
+const outputDir = path.join(__dirname, '../src/icons');
 
 async function generateIcons() {
     try {
@@ -13,17 +13,14 @@ async function generateIcons() {
 
         // 为每个尺寸生成图标
         for (const size of sizes) {
-            await sharp(inputFile)
+            await sharp(sourceIcon)
                 .resize(size, size)
-                .png()
                 .toFile(path.join(outputDir, `icon${size}.png`));
-
-            console.log(`Generated icon${size}.png`);
         }
 
-        console.log('All icons generated successfully!');
+        console.log('图标生成成功！');
     } catch (error) {
-        console.error('Error generating icons:', error);
+        console.error('生成图标时出错:', error);
         process.exit(1);
     }
 }
