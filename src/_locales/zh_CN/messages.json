@@ -1,38 +1,14 @@
 {
     "extName": {
-        "message": "金句卡片生成器",
-        "description": "扩展名称"
+        "message": "Quote Card Generator"
     },
     "extDescription": {
-        "message": "一个简单易用的 Chrome 扩展，帮助你快速生成精美的金句卡片",
-        "description": "扩展描述"
+        "message": "一个简单的引用卡片生成器"
     },
-    "createCard": {
-        "message": "生成卡片",
-        "description": "生成卡片按钮文本"
+    "noTemplates": {
+        "message": "暂无模板"
     },
-    "copyText": {
-        "message": "复制文本",
-        "description": "复制文本按钮文本"
-    },
-    "settings": {
-        "message": "设置",
-        "description": "设置菜单项"
-    },
-    "templates": {
-        "message": "模板",
-        "description": "模板菜单项"
-    },
-    "inputPlaceholder": {
-        "message": "输入或粘贴文本...",
-        "description": "输入框占位文本"
-    },
-    "selectTemplate": {
-        "message": "选择模板",
-        "description": "选择模板按钮文本"
-    },
-    "exportImage": {
-        "message": "导出图片",
-        "description": "导出图片按钮文本"
+    "loading": {
+        "message": "加载中..."
     }
 }

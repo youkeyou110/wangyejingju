@@ -14,7 +14,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name]/[name].[contenthash].js'
+        filename: '[name]/[name].js'
     },
     optimization: {
         minimizer: [
@@ -57,7 +57,10 @@ module.exports = {
                 { from: 'src/manifest.json', to: 'manifest.json' },
                 { from: 'src/popup/popup.html', to: 'popup/popup.html' },
                 { from: 'src/icons', to: 'icons' },
-                { from: 'src/popup/css', to: 'popup/css' }
+                { from: 'src/popup/css/popup.css', to: 'popup/popup.css' },
+                { from: 'src/popup/css/template-editor.css', to: 'popup/template-editor.css' },
+                { from: 'src/background/background.js', to: 'background/background.js' },
+                { from: 'src/_locales', to: '_locales' }
             ]
         })
     ]

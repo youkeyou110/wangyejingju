@@ -1,8 +1,8 @@
 const defaultTemplates = [
     {
         id: 'simple',
-        name: '简约模板',
-        thumbnail: 'images/templates/simple.png',
+        name: '__MSG_templateSimple__',
+        thumbnail: 'icons/template-simple.png',
         style: {
             background: '#ffffff',
             color: '#333333',
@@ -28,8 +28,8 @@ const defaultTemplates = [
     },
     {
         id: 'dark',
-        name: '深色模板',
-        thumbnail: 'images/templates/dark.png',
+        name: '__MSG_templateDark__',
+        thumbnail: 'icons/template-dark.png',
         style: {
             background: '#2c2c2c',
             color: '#ffffff',

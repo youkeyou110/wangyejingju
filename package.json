@@ -8,7 +8,8 @@
         "lint": "eslint src/**/*.js",
         "format": "prettier --write src/**/*.{js,css,html}",
         "test": "jest",
-        "generate-icons": "node scripts/generate-icons.js"
+        "generate-icons": "node scripts/generate-icons.js",
+        "create-base-icon": "node scripts/create-base-icon.js"
     },
     "dependencies": {
         "html2canvas": "^1.4.1"
