@@ -3,19 +3,46 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Quote Card Generator</title>
-    <link rel="stylesheet" href="popup.css">
-    <link rel="stylesheet" href="template-editor.css">
+    <title>金句卡片生成器</title>
 </head>
 
 <body>
     <div id="app">
-        <div id="template-selector"></div>
-        <div id="editor"></div>
-        <div id="preview"></div>
-        <div id="toolbar"></div>
+        <header class="header">
+            <h1>金句卡片生成器</h1>
+        </header>
+
+        <main class="main">
+            <section id="template-selector" class="section">
+                <h2>选择模板</h2>
+                <div class="template-list">
+                    <!-- 模板列表将通过JS动态添加 -->
+                </div>
+            </section>
+
+            <section id="editor" class="section">
+                <h2>编辑内容</h2>
+                <div class="editor-container">
+                    <textarea id="quote-text" placeholder="输入或粘贴文字..."></textarea>
+                </div>
+                <div id="style-editor"></div>
+            </section>
+
+            <section id="preview" class="section">
+                <h2>预览</h2>
+                <div class="preview-container">
+                    <!-- 预览内容将通过JS动态更新 -->
+                </div>
+                <div id="export-settings"></div>
+            </section>
+
+            <section id="toolbar" class="section">
+                <button id="generate-btn" class="btn primary">生成卡片</button>
+                <button id="save-btn" class="btn">保存</button>
+                <button id="share-btn" class="btn">分享</button>
+            </section>
+        </main>
     </div>
-    <script src="./popup.js"></script>
 </body>
 
 </html>
