@@ -4,6 +4,7 @@ import { templates } from '../data/templates';
 import { StyleEditor } from '../components/StyleEditor';
 import { ExportSettings } from '../components/ExportSettings';
 import { ExportUtil } from '../utils/ExportUtil';
+import { TemplateEditor } from '../components/TemplateEditor';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('弹出窗口已加载');
@@ -21,39 +22,71 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 初始化模板列表
-    const templateList = document.querySelector('.template-list');
-    let selectedTemplate = templates[0];
+    // 初始化模板列表函数
+    function renderTemplateList() {
+        const templateList = document.querySelector('.template-list');
+        templateList.innerHTML = ''; // 清空现有列表
 
-    // 渲染模板列表
-    templates.forEach(template => {
-        const templateItem = document.createElement('div');
-        templateItem.className = 'template-item';
-        templateItem.dataset.templateId = template.id;
+        templates.forEach(template => {
+            const templateItem = document.createElement('div');
+            templateItem.className = 'template-item';
+            templateItem.dataset.templateId = template.id;
 
-        if (template.id === selectedTemplate.id) {
-            templateItem.classList.add('active');
-        }
+            if (template.id === selectedTemplate.id) {
+                templateItem.classList.add('active');
+            }
 
-        templateItem.innerHTML = `
-            <img class="template-thumbnail" src="${template.thumbnail}" alt="${template.name}">
-            <div class="template-name">${template.name}</div>
-        `;
+            // 生成缩略图
+            const thumbnail = generateThumbnail(template.style);
 
-        templateItem.addEventListener('click', () => {
-            // 更新选中状态
-            document.querySelectorAll('.template-item').forEach(item => {
-                item.classList.remove('active');
+            templateItem.innerHTML = `
+                <img class="template-thumbnail" src="${thumbnail}" alt="${template.name}">
+                <div class="template-name">${template.name}</div>
+            `;
+
+            templateItem.addEventListener('click', () => {
+                // 更新选中状态
+                document.querySelectorAll('.template-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                templateItem.classList.add('active');
+                selectedTemplate = template;
+
+                // 更新预览
+                updatePreview();
             });
-            templateItem.classList.add('active');
-            selectedTemplate = template;
 
-            // 更新预览
-            updatePreview();
+            templateList.appendChild(templateItem);
         });
 
-        templateList.appendChild(templateItem);
-    });
+        // 保存到本地存储
+        chrome.storage.local.set({ templates: templates });
+    }
+
+    // 生成缩略图
+    function generateThumbnail(style) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 120;
+        canvas.height = 80;
+        const ctx = canvas.getContext('2d');
+
+        // 应用背景样式
+        if (style.background.includes('gradient')) {
+            const gradient = ctx.createLinearGradient(0, 0, 120, 80);
+            const colors = style.background.match(/#[a-f0-9]{6}/gi) || ['#ffffff', '#e0e0e0'];
+            gradient.addColorStop(0, colors[0]);
+            gradient.addColorStop(1, colors[1]);
+            ctx.fillStyle = gradient;
+        } else {
+            ctx.fillStyle = style.background || '#ffffff';
+        }
+
+        ctx.fillRect(0, 0, 120, 80);
+
+        return canvas.toDataURL();
+    }
+
+    let selectedTemplate = templates[0];
 
     // 初始化按钮事件
     const generateBtn = document.getElementById('generate-btn');
@@ -116,4 +149,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // 初始化导出设置
     const exportSettingsContainer = document.getElementById('export-settings');
     const exportSettings = new ExportSettings(exportSettingsContainer);
+
+    // 初始化模板编辑器
+    const templateEditorContainer = document.createElement('div');
+    templateEditorContainer.style.display = 'none';
+    document.body.appendChild(templateEditorContainer);
+
+    const templateEditor = new TemplateEditor(templateEditorContainer, (template) => {
+        // 生成缩略图
+        template.thumbnail = generateThumbnail(template.style);
+        // 保存新模板
+        templates.push(template);
+        // 更新模板列表
+        renderTemplateList();
+        // 隐藏编辑器
+        templateEditorContainer.style.display = 'none';
+        // 选中新模板
+        selectedTemplate = template;
+        updatePreview();
+    });
+
+    // 添加新建模板按钮
+    const addTemplateBtn = document.createElement('button');
+    addTemplateBtn.className = 'btn';
+    addTemplateBtn.textContent = '新建模板';
+    addTemplateBtn.onclick = () => {
+        templateEditorContainer.style.display = 'block';
+    };
+    document.querySelector('#template-selector').appendChild(addTemplateBtn);
+
+    // 初始加载模板
+    chrome.storage.local.get(['templates'], (result) => {
+        if (result.templates) {
+            templates.push(...result.templates);
+        }
+        renderTemplateList();
+    });
 });

@@ -1,4 +1,4 @@
-export const templates = [
+export let templates = [
     {
         id: 'template1',
         name: '简约白',

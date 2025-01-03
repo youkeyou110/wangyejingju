@@ -191,3 +191,54 @@ body {
 .size-inputs {
     margin-left: 16px;
 }
+
+/* 模板编辑器 */
+.template-editor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.editor-section {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: #f5f5f5;
+    border-radius: 4px;
+}
+
+.editor-section h4 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.editor-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.editor-row label {
+    width: 80px;
+    font-size: 12px;
+    color: #666;
+}
+
+.editor-row input[type="text"],
+.editor-row select {
+    flex: 1;
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.editor-actions {
+    margin-top: 20px;
+    text-align: right;
+}
