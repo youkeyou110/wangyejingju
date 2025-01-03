@@ -5,6 +5,7 @@ import { StyleEditor } from '../components/StyleEditor';
 import { ExportSettings } from '../components/ExportSettings';
 import { ExportUtil } from '../utils/ExportUtil';
 import { TemplateEditor } from '../components/TemplateEditor';
+import { TemplateManager } from '../utils/TemplateManager';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('弹出窗口已加载');
@@ -169,14 +170,47 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePreview();
     });
 
-    // 添加新建模板按钮
-    const addTemplateBtn = document.createElement('button');
-    addTemplateBtn.className = 'btn';
-    addTemplateBtn.textContent = '新建模板';
-    addTemplateBtn.onclick = () => {
+    // 初始化模板管理按钮
+    document.getElementById('add-template').onclick = () => {
         templateEditorContainer.style.display = 'block';
     };
-    document.querySelector('#template-selector').appendChild(addTemplateBtn);
+
+    // 导入模板
+    document.getElementById('import-templates').onclick = () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+
+        input.onchange = async (e) => {
+            try {
+                const file = e.target.files[0];
+                const importedTemplates = await TemplateManager.importTemplates(file);
+
+                // 添加新模板
+                templates.push(...importedTemplates);
+
+                // 更新模板列表
+                renderTemplateList();
+
+                alert('模板导入成功！');
+            } catch (error) {
+                console.error('导入模板失败:', error);
+                alert(error.message || '导入模板失败，请检查文件格式');
+            }
+        };
+
+        input.click();
+    };
+
+    // 导出模板
+    document.getElementById('export-templates').onclick = () => {
+        try {
+            TemplateManager.exportTemplates(templates);
+        } catch (error) {
+            console.error('导出模板失败:', error);
+            alert('导出模板失败，请重试');
+        }
+    };
 
     // 初始加载模板
     chrome.storage.local.get(['templates'], (result) => {
