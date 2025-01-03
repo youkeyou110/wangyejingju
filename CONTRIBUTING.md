@@ -1,169 +1,202 @@
 # 贡献指南
 
-感谢你考虑为 Quote Card Generator 做出贡献！
+感谢您对金句卡片生成器的关注！我们欢迎各种形式的贡献，包括但不限于：
+
+- 提交问题和建议
+- 改进文档
+- 修复bug
+- 添加新功能
+- 优化性能
+- 完善测试
 
 ## 开发流程
 
-1. Fork 项目并克隆到本地
+### 1. 准备工作
+
+1. Fork项目到自己的账号下
+2. Clone项目到本地
 ```bash
 git clone https://github.com/your-username/quote-card-generator.git
 cd quote-card-generator
 ```
 
-2. 创建新分支
-```bash
-git checkout -b feature/your-feature-name
-```
-
 3. 安装依赖
 ```bash
-# 前端依赖
-npm install
-
-# 后端依赖
-cd server
 npm install
 ```
 
-4. 进行开发
-- 遵循代码规范
-- 添加必要的测试
-- 保持提交信息清晰
-
-5. 运行测试
+4. 创建新分支
 ```bash
-# 前端测试
-npm test
-
-# 后端测试
-cd server
-npm test
+git checkout -b feature/your-feature
 ```
 
-6. 提交代码
+### 2. 开发
+
+1. 启动开发服务器
+```bash
+npm run dev
+```
+
+2. 修改代码
+   - 遵循代码规范
+   - 添加必要的注释
+   - 编写测试用例
+
+3. 提交代码
 ```bash
 git add .
-git commit -m "feat: add some feature"
-git push origin feature/your-feature-name
+git commit -m "feat: add new feature"
+git push origin feature/your-feature
 ```
 
-## 提交规范
+### 3. 提交PR
 
-我们使用 [Conventional Commits](https://www.conventionalcommits.org/) 规范：
+1. 创建Pull Request
+   - 描述改动内容
+   - 关联相关Issue
+   - 添加测试结果
 
-- `feat`: 新功能
-- `fix`: 修复问题
-- `docs`: 文档更新
-- `style`: 代码格式调整
-- `refactor`: 代码重构
-- `test`: 测试相关
-- `chore`: 构建/工具相关
-
-示例：
-```
-feat: 添加模板预览功能
-fix: 修复图片导出失败问题
-docs: 更新 API 文档
-```
+2. 等待审查
+   - 及时响应反馈
+   - 修改完善代码
+   - 确保CI通过
 
 ## 代码规范
 
-### JavaScript
+### 1. 命名规范
 
-- 使用 ES6+ 语法
-- 遵循 ESLint 配置
-- 使用 2 空格缩进
-- 使用分号结尾
-- 优先使用 const/let
+- 文件名
+  - 组件：PascalCase
+  - 工具函数：camelCase
+  - 样式文件：kebab-case
 
-### CSS
+- 变量名
+  - 普通变量：camelCase
+  - 常量：UPPER_CASE
+  - 类名：PascalCase
+  - 接口名：IPascalCase
 
-- 使用 CSS Variables
-- 采用 BEM 命名规范
-- 保持选择器简洁
-- 避免使用 !important
+### 2. 注释规范
 
-### 测试
-
-- 单元测试覆盖率 > 80%
-- 编写有意义的测试描述
-- 测试文件与源文件同名
-- 使用合适的断言
-
-## Pull Request 流程
-
-1. 确保 PR 标题符合提交规范
-2. 填写完整的 PR 描述
-3. 关联相关 Issue
-4. 通过所有自动化测试
-5. 等待代码审查
-6. 根据反馈进行修改
-7. 等待合并
-
-## 开发环境
-
-- Node.js >= 14
-- npm >= 6
-- Chrome >= 88
-- MongoDB >= 4.4
-
-## 项目结构说明
-
-```
-quote-card-generator/
-├── src/                    # 前端源码
-│   ├── popup/             # 弹出窗口
-│   │   ├── components/    # UI组件
-│   │   ├── styles/        # 样式文件
-│   │   └── utils/         # 工具函数
-│   ├── background/        # 后台脚本
-│   ├── content/           # 内容脚本
-│   └── templates/         # 模板系统
-├── server/                # 后端服务
-│   ├── src/              # 服务器源码
-│   │   ├── controllers/  # 控制器
-│   │   ├── models/       # 数据模型
-│   │   ├── routes/       # 路由
-│   │   └── middleware/   # 中间件
-│   ├── tests/            # 测试用例
-│   └── docs/             # API文档
-└── docs/                  # 项目文档
+- 文件头部
+```javascript
+/**
+ * @file 文件描述
+ * @author 作者
+ * @date 创建日期
+ */
 ```
 
-## 常见问题
+- 函数注释
+```javascript
+/**
+ * 函数描述
+ * @param {Type} paramName - 参数描述
+ * @returns {Type} 返回值描述
+ * @throws {Error} 错误描述
+ */
+```
 
-### 如何调试
+- 复杂逻辑注释
+```javascript
+// 解释为什么这样做
+// 说明实现思路
+// 标注注意事项
+```
 
-1. 前端调试
-   - 使用 Chrome DevTools
-   - 查看 Console 输出
-   - 使用 Vue DevTools
+### 3. 代码风格
 
-2. 后端调试
-   - 使用 VS Code Debugger
-   - 查看日志输出
-   - 使用 Postman 测试 API
+- 使用ESLint和Prettier
+- 遵循项目的.eslintrc配置
+- 保持代码整洁一致
+- 避免重复代码
 
-### 开发建议
+## 提交规范
 
-1. 功能开发
-   - 先写测试用例
-   - 保持功能独立
-   - 考虑边界情况
-   - 添加错误处理
+### 1. 提交信息
 
-2. 性能优化
-   - 减少 DOM 操作
-   - 优化图片加载
-   - 使用缓存机制
-   - 避免内存泄漏
+格式：`<type>(<scope>): <subject>`
 
-## 联系方式
+类型（type）：
+- feat：新功能
+- fix：修复bug
+- docs：文档更新
+- style：代码格式
+- refactor：重构
+- test：测试
+- chore：构建
 
-- Issue 讨论：[GitHub Issues](https://github.com/your-username/quote-card-generator/issues)
-- 邮件联系：your-email@example.com
-- 开发群：[Telegram Group](https://t.me/quote_card_dev)
+示例：
+```
+feat(template): add new card template
+fix(storage): fix data sync issue
+docs(api): update API documentation
+```
 
-## 许可证
+### 2. 分支规范
 
-贡献代码时，你同意将代码按照项目的 MIT 许可证开源。
+- main：主分支
+- develop：开发分支
+- feature/*：功能分支
+- bugfix/*：修复分支
+- release/*：发布分支
+
+### 3. PR规范
+
+- 标题清晰简洁
+- 描述改动内容
+- 关联相关Issue
+- 添加测试结果
+- 确保CI通过
+
+## 审查流程
+
+### 1. 代码审查
+
+审查重点：
+- 代码质量
+- 测试覆盖
+- 性能影响
+- 安全隐患
+- 文档完整
+
+### 2. 测试验证
+
+必要测试：
+- 单元测试
+- 集成测试
+- E2E测试
+- 性能测试
+
+### 3. 合并发布
+
+合并条件：
+- 审查通过
+- 测试通过
+- CI通过
+- 文档完善
+
+## 其他说明
+
+### 1. 问题反馈
+
+- 使用Issue模板
+- 提供复现步骤
+- 附上错误日志
+- 说明环境信息
+
+### 2. 功能建议
+
+- 描述使用场景
+- 说明实现思路
+- 评估可行性
+- 考虑兼容性
+
+### 3. 文档改进
+
+- 修正错误
+- 添加示例
+- 完善说明
+- 优化格式
+
+感谢您的贡献！

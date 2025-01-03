@@ -1,50 +1,58 @@
-// 扩展安装/更新时的处理
-chrome.runtime.onInstalled.addListener(() => {
-    // 初始化存储
-    chrome.storage.local.set({
-        templates: [],
-        settings: {
-            theme: 'light',
-            shortcuts: {},
-            exportOptions: {
-                format: 'png',
-                quality: 'high'
-            }
+import { initializeMessageHandlers } from './messageHandlers';
+import { setupContextMenus } from './contextMenus';
+import { setupStorageListeners } from './storageListeners';
+import logManager from '../managers/LogManager';
+import stateManager from '../managers/StateManager';
+
+// 初始化后台脚本
+const initialize = async () => {
+    try {
+        // 初始化消息处理器
+        initializeMessageHandlers();
+
+        // 设置右键菜单
+        setupContextMenus();
+
+        // 设置存储监听器
+        setupStorageListeners();
+
+        // 初始化状态
+        await stateManager.initialize();
+
+        // 记录初始化成功
+        logManager.info('Background script initialized successfully');
+    } catch (error) {
+        logManager.error('Background script initialization failed:', error);
+    }
+};
+
+// 监听安装事件
+chrome.runtime.onInstalled.addListener(async ({ reason }) => {
+    try {
+        if (reason === 'install') {
+            // 首次安装
+            await stateManager.performFirstTimeSetup();
+            logManager.info('Extension installed successfully');
+        } else if (reason === 'update') {
+            // 更新安装
+            await stateManager.performUpdate();
+            logManager.info('Extension updated successfully');
         }
-    });
+    } catch (error) {
+        logManager.error('Installation handling failed:', error);
+    }
 });
 
-// 监听消息
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    switch (request.type) {
-        case 'CAPTURE_QUOTE':
-            captureQuote(request.data, sendResponse);
-            break;
-        case 'SYNC_DATA':
-            syncData(request.data, sendResponse);
-            break;
-        default:
-            console.log('Unknown message type:', request.type);
+// 监听卸载事件
+chrome.runtime.onSuspend.addListener(() => {
+    try {
+        // 清理资源
+        stateManager.cleanup();
+        logManager.info('Extension cleanup completed');
+    } catch (error) {
+        logManager.error('Cleanup failed:', error);
     }
-    return true;
 });
 
-// 捕获引用内容
-async function captureQuote(data, sendResponse) {
-    try {
-        // 实现引用捕获逻辑
-        sendResponse({ success: true });
-    } catch (error) {
-        sendResponse({ success: false, error: error.message });
-    }
-}
-
-// 数据同步
-async function syncData(data, sendResponse) {
-    try {
-        // 实现数据同步逻辑
-        sendResponse({ success: true });
-    } catch (error) {
-        sendResponse({ success: false, error: error.message });
-    }
-}
+// 初始化
+initialize();

@@ -1,291 +1,356 @@
-# API 文档
+# API文档
 
-## 核心组件 API
+## 目录
 
-### TemplateManager
+- [管理器API](#管理器api)
+  - [StorageManager](#storagemanager)
+  - [PerformanceManager](#performancemanager)
+  - [UpdateManager](#updatemanager)
+- [工具函数API](#工具函数api)
+  - [存储工具](#存储工具)
+  - [样式工具](#样式工具)
+  - [导出工具](#导出工具)
+- [组件API](#组件api)
+  - [StyleEditor](#styleeditor)
+  - [LivePreview](#livepreview)
+  - [HistoryPanel](#historypanel)
 
-模板管理器，负责模板的增删改查和存储管理。
+## 管理器API
+
+### StorageManager
+
+存储管理器，负责数据的存储、检索和同步。
 
 #### 方法
 
 ```typescript
-class TemplateManager {
-  // 获取所有模板（包括默认和自定义）
-  async getAllTemplates(): Promise<Template[]>
+class StorageManager {
+    // 设置数据
+    async set(key: string, value: any, options?: StorageOptions): Promise<boolean>;
 
-  // 保存新模板
-  async saveTemplate(template: Template): Promise<void>
+    // 获取数据
+    async get(key: string, defaultValue?: any): Promise<any>;
 
-  // 删除模板
-  async deleteTemplate(templateId: string): Promise<void>
+    // 删除数据
+    async remove(key: string): Promise<boolean>;
 
-  // 应用模板样式到元素
-  applyTemplate(template: Template, element: HTMLElement): void
+    // 清空所有数据
+    async clear(): Promise<void>;
+
+    // 查询数据
+    async query(options: QueryOptions): Promise<QueryResult[]>;
+
+    // 获取存储统计
+    async getStats(): Promise<StorageStats>;
 }
 ```
 
-#### 类型定义
+#### 示例
+
+```javascript
+import storageManager from '../managers/StorageManager';
+
+// 存储数据
+await storageManager.set('settings', {
+    theme: 'dark',
+    autoSave: true
+});
+
+// 获取数据
+const settings = await storageManager.get('settings');
+
+// 查询数据
+const results = await storageManager.query({
+    type: 'card',
+    tags: ['favorite']
+});
+```
+
+### PerformanceManager
+
+性能管理器，负责监控和优化应用性能。
+
+#### 方法
 
 ```typescript
-interface Template {
-  id?: string;          // 模板ID，新建时可选
-  name: string;         // 模板名称
-  style: {
-    background: {
-      type: 'color' | 'gradient';
-      value: string;
-    };
-    font: {
-      family: string;
-      size: string;
-      color: string;
-      weight?: string;
-      lineHeight?: string;
-      letterSpacing?: string;
-    };
-    layout: {
-      padding?: string;
-      textAlign?: string;
-      width?: string;
-      height?: string;
-    };
-    effects: {
-      shadow?: string;
-      border?: string;
-    };
-  };
+class PerformanceManager {
+    // 开始监控
+    start(): void;
+
+    // 停止监控
+    stop(): void;
+
+    // 添加监听器
+    addListener(callback: (data: MetricData) => void): () => void;
+
+    // 生成性能报告
+    generateReport(): PerformanceReport;
 }
 ```
+
+### UpdateManager
+
+更新管理器，负责版本更新和数据迁移。
+
+#### 方法
+
+```typescript
+class UpdateManager {
+    // 检查更新
+    async checkForUpdates(): Promise<void>;
+
+    // 数据迁移
+    async migrate(fromVersion: string, toVersion: string): Promise<void>;
+
+    // 版本回滚
+    async rollback(toVersion: string): Promise<void>;
+}
+```
+
+## 工具函数API
+
+### 存储工具
+
+```typescript
+// 数据压缩
+async function compressData(data: any, options?: CompressionOptions): Promise<any>;
+
+// 数据解压
+async function decompressData(data: any, type?: string): Promise<any>;
+
+// 批量操作
+async function batchOperation(
+    keys: string[],
+    operation: (key: string) => Promise<any>
+): Promise<OperationResult>;
+```
+
+### 样式工具
+
+```typescript
+// 样式转换
+function styleToCSS(style: StyleObject): string;
+
+// 颜色转换
+function convertColor(color: string, format: 'rgb' | 'hex' | 'hsl'): string;
+
+// 单位转换
+function convertUnit(value: number, from: Unit, to: Unit): number;
+```
+
+### 导出工具
+
+```typescript
+// 导出为图片
+async function exportToImage(
+    element: HTMLElement,
+    options: ExportOptions
+): Promise<Blob>;
+
+// 导出为JSON
+function exportToJSON(data: any): string;
+
+// 批量导出
+async function batchExport(
+    items: ExportItem[],
+    options: ExportOptions
+): Promise<ExportResult[]>;
+```
+
+## 组件API
 
 ### StyleEditor
 
-样式编辑器，负责样式的实时编辑和预览。
+样式编辑器组件。
 
-#### 方法
+#### 属性
 
 ```typescript
-class StyleEditor {
-  // 加载样式
-  loadStyle(style: Style): void
-
-  // 更新指定类别的样式
-  updateStyle(category: string, value: any): void
-
-  // 获取当前样式
-  getCurrentStyle(): Style
-
-  // 更新预览
-  updatePreview(): void
+interface StyleEditorProps {
+    // 初始样式
+    initialStyle?: StyleObject;
+    // 样式变更回调
+    onChange?: (style: StyleObject) => void;
+    // 预设模板
+    templates?: Template[];
+    // 自定义工具栏
+    toolbar?: ToolbarConfig;
 }
 ```
 
-### CardExporter
+#### 示例
 
-卡片导出器，负责将卡片导出为图片。
+```jsx
+import StyleEditor from '../components/StyleEditor';
 
-#### 方法
-
-```typescript
-class CardExporter {
-  // 导出卡片为图片
-  async exportCard(
-    element: HTMLElement,
-    options?: ExportOptions
-  ): Promise<string>
-}
-
-interface ExportOptions {
-  format?: 'png' | 'jpeg' | 'webp';
-  quality?: number;      // 0-1
-  scale?: number;        // 导出缩放比例
+function App() {
+    return (
+        <StyleEditor
+            initialStyle={{
+                background: { type: 'solid', color: '#ffffff' },
+                font: { family: 'Arial', size: '16px' }
+            }}
+            onChange={style => console.log('Style updated:', style)}
+        />
+    );
 }
 ```
 
-## 辅助组件 API
+### LivePreview
 
-### ErrorHandler
+实时预览组件。
 
-错误处理器，提供统一的错误处理机制。
-
-#### 方法
+#### 属性
 
 ```typescript
-class ErrorHandler {
-  // 处理错误
-  handleError(error: Error, context?: string): string
-
-  // 处理异步错误
-  async handleAsyncError<T>(
-    promise: Promise<T>,
-    context?: string
-  ): Promise<T>
-
-  // 包装事件处理器
-  wrapEventHandler(
-    handler: Function,
-    context?: string
-  ): Function
-
-  // 验证输入
-  validateInput(
-    value: any,
-    rules: ValidationRules,
-    context?: string
-  ): boolean
-}
-
-interface ValidationRules {
-  required?: boolean;
-  minLength?: number;
-  maxLength?: number;
-  pattern?: RegExp;
-  min?: number;
-  max?: number;
+interface LivePreviewProps {
+    // 预览内容
+    content: string;
+    // 应用的样式
+    style: StyleObject;
+    // 自定义渲染器
+    renderer?: (content: string, style: StyleObject) => ReactNode;
 }
 ```
 
-### I18n
+### HistoryPanel
 
-国际化工具，提供多语言支持。
+历史记录面板组件。
 
-#### 方法
+#### 属性
 
 ```typescript
-class I18n {
-  // 初始化
-  async init(): Promise<void>
-
-  // 获取翻译文本
-  getMessage(key: string, substitutions?: string[]): string
-
-  // 切换语言
-  async changeLocale(locale: string): Promise<void>
-
-  // 更新页面翻译
-  updatePageTranslations(): void
-
-  // 获取当前语言
-  getCurrentLocale(): string
+interface HistoryPanelProps {
+    // 每页显示数量
+    pageSize?: number;
+    // 选中项回调
+    onSelect?: (item: HistoryItem) => void;
+    // 删除项回调
+    onDelete?: (item: HistoryItem) => void;
+    // 自定义过滤器
+    filter?: (item: HistoryItem) => boolean;
 }
 ```
 
-## 事件
-
-系统定义的自定义事件：
+## 类型定义
 
 ```typescript
-interface CustomEvents {
-  // 语言变更事件
-  'localeChanged': CustomEvent<{
-    locale: string;
-    previousLocale: string;
-  }>;
+// 存储选项
+interface StorageOptions {
+    compress?: boolean;
+    expires?: number;
+    tags?: string[];
+    type?: string;
+}
 
-  // 模板更新事件
-  'templateUpdated': CustomEvent<{
-    templateId: string;
-  }>;
+// 查询选项
+interface QueryOptions {
+    type?: string;
+    tags?: string[];
+    fromDate?: number;
+    toDate?: number;
+    limit?: number;
+}
 
-  // 样式变更事件
-  'styleChanged': CustomEvent<{
-    category: string;
+// 性能指标数据
+interface MetricData {
+    name: string;
     value: any;
-  }>;
+    timestamp: number;
+}
 
-  // 导出开始事件
-  'exportStart': CustomEvent<{
-    format: string;
-    quality: number;
-  }>;
+// 性能报告
+interface PerformanceReport {
+    timestamp: number;
+    metrics: Record<string, any>;
+    warnings: Warning[];
+    recommendations: string[];
+}
 
-  // 导出完成事件
-  'exportComplete': CustomEvent<{
-    dataUrl: string;
-  }>;
+// 导出选项
+interface ExportOptions {
+    format: 'png' | 'jpg' | 'webp';
+    quality?: number;
+    scale?: number;
+    background?: boolean;
 }
 ```
-
-## 存储结构
-
-Chrome 存储中的数据结构：
-
-```typescript
-interface StorageData {
-  // 自定义模板
-  customTemplates: Template[];
-
-  // 用户设置
-  settings: {
-    userLocale?: string;
-    defaultFormat?: string;
-    defaultQuality?: number;
-  };
-
-  // 操作日志
-  logs: {
-    timestamp: string;
-    type: string;
-    message: string;
-  }[];
-}
-```
-
-## 使用示例
-
-```javascript
-// 创建并保存模板
-const templateManager = new TemplateManager();
-const newTemplate = {
-  name: '自定义模板',
-  style: {
-    background: {
-      type: 'color',
-      value: '#ffffff'
-    },
-    font: {
-      family: 'Arial',
-      size: '16px',
-      color: '#000000'
-    },
-    layout: {
-      padding: '20px'
-    },
-    effects: {}
-  }
-};
-await templateManager.saveTemplate(newTemplate);
-
-// 导出卡片
-const cardExporter = new CardExporter();
-const element = document.getElementById('cardPreview');
-await cardExporter.exportCard(element, {
-  format: 'png',
-  quality: 0.9,
-  scale: 2
-});
-
-// 切换语言
-const i18n = new I18n();
-await i18n.changeLocale('en');
-```
-
-## 消息类型
-
-### 内容脚本消息
-- `textSelected`: 文本选择事件
-- `generateCard`: 生成卡片请求
-- `openPopup`: 打开弹出窗口
-
-### 设置相关消息
-- `getSettings`: 获取设置
-- `saveSettings`: 保存设置
 
 ## 错误处理
-所有消息响应都包含以下格式：
+
+所有API方法都会抛出标准化的错误：
+
 ```typescript
-interface Response {
-  success?: boolean;
-  error?: string;
-  data?: any;
+class APIError extends Error {
+    constructor(
+        message: string,
+        public code: string,
+        public details?: any
+    ) {
+        super(message);
+    }
 }
 ```
+
+常见错误代码：
+
+- `STORAGE_FULL`: 存储空间不足
+- `INVALID_DATA`: 无效的数据格式
+- `VERSION_MISMATCH`: 版本不匹配
+- `NETWORK_ERROR`: 网络错误
+- `PERMISSION_DENIED`: 权限不足
+
+## 最佳实践
+
+1. 错误处理
+```javascript
+try {
+    await storageManager.set('key', value);
+} catch (error) {
+    if (error.code === 'STORAGE_FULL') {
+        await storageManager.cleanup();
+        await storageManager.set('key', value);
+    }
+}
+```
+
+2. 性能优化
+```javascript
+// 批量操作
+const results = await batchOperation(keys, key =>
+    storageManager.get(key)
+);
+
+// 使用压缩
+await storageManager.set('largeData', data, {
+    compress: true
+});
+```
+
+3. 组件组合
+```jsx
+function CardEditor() {
+    const [style, setStyle] = useState(initialStyle);
+
+    return (
+        <div>
+            <StyleEditor
+                value={style}
+                onChange={setStyle}
+            />
+            <LivePreview
+                content={content}
+                style={style}
+            />
+        </div>
+    );
+}
+```
+
+## 更新日志
+
+查看[CHANGELOG.md](../CHANGELOG.md)了解API变更历史。
+
+## 贡献
+
+欢迎提交问题和建议到[GitHub Issues](https://github.com/your-username/quote-card-generator/issues)。

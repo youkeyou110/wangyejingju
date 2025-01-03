@@ -1,0 +1,97 @@
+/* 基础无障碍样式 */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* 键盘导航焦点样式 */
+.keyboard-navigation :focus {
+    outline: 3px solid #2196F3 !important;
+    outline-offset: 2px !important;
+}
+
+/* 高对比度主题 */
+.high-contrast {
+    --text-color: #000000;
+    --bg-color: #FFFFFF;
+    --link-color: #0000EE;
+    --border-color: #000000;
+}
+
+.high-contrast.dark {
+    --text-color: #FFFFFF;
+    --bg-color: #000000;
+    --link-color: #00FF00;
+    --border-color: #FFFFFF;
+}
+
+/* 字体大小调整 */
+[data-font-size="large"] {
+    font-size: 120%;
+}
+
+[data-font-size="larger"] {
+    font-size: 140%;
+}
+
+/* 动画控制 */
+.no-animations * {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* 焦点指示器 */
+[role="button"]:focus,
+[role="tab"]:focus,
+[role="menuitem"]:focus {
+    outline: 3px solid #2196F3;
+    outline-offset: 2px;
+}
+
+/* 无障碍菜单样式 */
+.accessibility-menu {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    padding: 16px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 表单控件无障碍样式 */
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 3px solid #2196F3;
+    outline-offset: 2px;
+}
+
+/* 错误状态指示 */
+[aria-invalid="true"] {
+    border-color: #FF0000;
+}
+
+.error-message {
+    color: #FF0000;
+    margin-top: 4px;
+}
+
+/* 加载状态指示 */
+[aria-busy="true"] {
+    cursor: progress;
+}
+
+/* 禁用状态样式 */
+[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

@@ -1,0 +1,87 @@
+.backup-settings {
+    padding: 20px 0;
+}
+
+.backup-progress {
+    margin-bottom: 16px;
+}
+
+.backup-alert {
+    margin-top: 24px;
+}
+
+.backup-tips {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.backup-tips li {
+    margin-bottom: 4px;
+}
+
+.backup-tips li:last-child {
+    margin-bottom: 0;
+}
+
+/* 表格样式 */
+.backup-table .ant-table-row {
+    cursor: pointer;
+}
+
+.backup-table .ant-table-row:hover {
+    background-color: #f5f5f5;
+}
+
+.backup-actions {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.backup-table .ant-table-row:hover .backup-actions {
+    opacity: 1;
+}
+
+/* 暗色主题适配 */
+.dark .backup-table .ant-table-row:hover {
+    background-color: #1f1f1f;
+}
+
+.dark .ant-progress-text {
+    color: #d9d9d9;
+}
+
+.dark .ant-alert {
+    background-color: #1f1f1f;
+    border-color: #434343;
+}
+
+.dark .ant-alert-message {
+    color: #fff;
+}
+
+.dark .ant-alert-description {
+    color: #999;
+}
+
+.dark .ant-form-item-label>label {
+    color: #d9d9d9;
+}
+
+.dark .ant-select-selector {
+    background-color: #141414 !important;
+    border-color: #434343 !important;
+}
+
+.dark .ant-input-number {
+    background-color: #141414;
+    border-color: #434343;
+}
+
+.dark .ant-input-number-handler-wrap {
+    background-color: #1f1f1f;
+    border-color: #434343;
+}
+
+.dark .ant-input-number-handler:hover {
+    background-color: #141414;
+}

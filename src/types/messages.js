@@ -1,0 +1,35 @@
+// 消息类型常量
+export const MESSAGE_TYPES = {
+    // 文本选择相关
+    TEXT_SELECTED: 'TEXT_SELECTED',
+    CLEAR_SELECTION: 'CLEAR_SELECTION',
+
+    // 模板相关
+    TEMPLATE_UPDATED: 'TEMPLATE_UPDATED',
+    TEMPLATE_APPLIED: 'TEMPLATE_APPLIED',
+
+    // 样式相关
+    STYLE_UPDATED: 'STYLE_UPDATED',
+    STYLE_APPLIED: 'STYLE_APPLIED',
+
+    // 预览相关
+    PREVIEW_REQUESTED: 'PREVIEW_REQUESTED',
+    PREVIEW_UPDATED: 'PREVIEW_UPDATED',
+
+    // 导出相关
+    EXPORT_REQUESTED: 'EXPORT_REQUESTED',
+    EXPORT_COMPLETED: 'EXPORT_COMPLETED',
+
+    // 状态同步
+    SYNC_STATE: 'SYNC_STATE',
+
+    // 错误处理
+    ERROR_OCCURRED: 'ERROR_OCCURRED'
+};
+
+// 消息状态
+export const MESSAGE_STATUS = {
+    SUCCESS: 'success',
+    ERROR: 'error',
+    PENDING: 'pending'
+};

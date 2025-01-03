@@ -1,0 +1,52 @@
+.share-button {
+    margin-left: 8px;
+}
+
+.share-button:hover {
+    opacity: 0.8;
+}
+
+.share-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.share-menu-item .anticon {
+    font-size: 16px;
+}
+
+.share-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.share-form-input {
+    margin-top: 8px;
+}
+
+.share-preview {
+    margin-top: 16px;
+    padding: 16px;
+    background: #f5f5f5;
+    border-radius: 4px;
+}
+
+/* 暗色主题适配 */
+.dark .share-menu-item {
+    color: #fff;
+}
+
+.dark .share-menu-item:hover {
+    background: #1f1f1f;
+}
+
+.dark .share-preview {
+    background: #1f1f1f;
+}
+
+.dark .share-form-input {
+    background: #141414;
+    border-color: #434343;
+}

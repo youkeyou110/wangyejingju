@@ -1,55 +1,95 @@
-// 监听文本选择事件
-document.addEventListener('mouseup', function(event) {
-  const selectedText = window.getSelection().toString().trim();
+import { MESSAGE_TYPES, MESSAGE_STATUS } from '../types/messages';
 
-  if (selectedText) {
-    // 向background发送选中的文本
-    chrome.runtime.sendMessage({
-      action: 'textSelected',
-      text: selectedText
-    });
-  }
-});
-
-// 监听快捷键
-document.addEventListener('keydown', (e) => {
-  // Ctrl+Shift+Q 或 Command+Shift+Q
-  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'Q') {
-    const selectedText = window.getSelection().toString().trim();
-    if (selectedText) {
-      chrome.runtime.sendMessage({
-        action: 'generateCard',
-        text: selectedText
-      });
+class ContentManager {
+    constructor() {
+        this.textSelector = null;
+        this.init();
     }
-  }
-});
 
-// 监听来自后台脚本的消息
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === 'generateCard') {
-    // 打开弹出窗口并传递选中的文本
-    chrome.runtime.sendMessage({
-      action: 'openPopup',
-      text: message.text
-    });
-  }
-});
+    init() {
+        // 初始化文本选择器
+        this.textSelector = new TextSelector();
 
-// 注入样式以支持预览
-const style = document.createElement('style');
-style.textContent = `
-  .quote-card-preview {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 999999;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    max-width: 90vw;
-    max-height: 90vh;
-    overflow: auto;
-  }
-`;
-document.head.appendChild(style);
+        // 监听来自Background的消息
+        chrome.runtime.onMessage.addListener(this.handleMessage.bind(this));
+
+        // 监听文本选择事件
+        document.addEventListener('mouseup', this.handleSelection.bind(this));
+
+        // 监听快捷键
+        document.addEventListener('keydown', this.handleKeydown.bind(this));
+    }
+
+    // 处理文本选择
+    handleSelection(event) {
+        const text = window.getSelection().toString().trim();
+        if (text) {
+            this.sendMessage({
+                type: MESSAGE_TYPES.TEXT_SELECTED,
+                data: { text }
+            });
+        }
+    }
+
+    // 处理快捷键
+    handleKeydown(event) {
+        // Ctrl/Cmd + Shift + Q
+        if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'Q') {
+            const text = window.getSelection().toString().trim();
+            if (text) {
+                this.sendMessage({
+                    type: MESSAGE_TYPES.TEXT_SELECTED,
+                    data: { text }
+                });
+            }
+        }
+    }
+
+    // 发送消息到Background
+    async sendMessage(message) {
+        try {
+            const response = await chrome.runtime.sendMessage(message);
+            if (response?.status === MESSAGE_STATUS.ERROR) {
+                throw new Error(response.error);
+            }
+            return response;
+        } catch (error) {
+            console.error('Failed to send message:', error);
+            this.handleError(error);
+        }
+    }
+
+    // 处理接收到的消息
+    handleMessage(message, sender, sendResponse) {
+        switch (message.type) {
+            case MESSAGE_TYPES.TEXT_SELECTED:
+                this.textSelector.highlightSelection(message.data.text);
+                sendResponse({ status: MESSAGE_STATUS.SUCCESS });
+                break;
+
+            case MESSAGE_TYPES.CLEAR_SELECTION:
+                this.textSelector.clearHighlight();
+                sendResponse({ status: MESSAGE_STATUS.SUCCESS });
+                break;
+
+            case MESSAGE_TYPES.ERROR_OCCURRED:
+                this.handleError(new Error(message.error));
+                break;
+
+            default:
+                console.warn('Unknown message type:', message.type);
+        }
+    }
+
+    // 错误处理
+    handleError(error) {
+        console.error('Error in content script:', error);
+        this.sendMessage({
+            type: MESSAGE_TYPES.ERROR_OCCURRED,
+            error: error.message
+        });
+    }
+}
+
+// 初始化内容管理器
+const contentManager = new ContentManager();

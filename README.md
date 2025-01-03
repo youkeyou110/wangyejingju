@@ -1,197 +1,111 @@
-# Quote Card Generator
+# 金句卡片生成器
 
-一个简单的引用卡片生成器 Chrome 扩展。
+一个Chrome扩展，帮助用户快速将网页中的精彩文字转换成精美的分享卡片。
 
-## 当前状态
+## 功能特性
 
-- ✅ 基础功能已完成
-- ✅ 后端服务已部署
-- ✅ 前端界面已实现
-- ✅ 监控系统已就绪
-- 🚧 Chrome商店发布待定
-
-## 功能特点
-
-- 🎨 丰富的模板系统
-  - 多种预设模板
-  - 自定义模板编辑
-  - 模板市场分享
-- 📝 智能文本选择
-  - 右键菜单快速选择
-  - 文本高亮预览
-  - 自动获取来源信息
-- 🔄 完善的通信机制
-  - 组件间实时通信
-  - 状态自动同步
-  - 错误智能处理
+- 🎯 智能文本选择：快速选择和高亮网页中的文字
+- 🎨 精美卡片模板：多种预设模板，支持自定义样式
+- 💾 便捷导出分享：支持多种格式导出，一键分享到社交媒体
+- 🔌 插件化架构：支持功能扩展，提供丰富的API
+- 🌈 主题定制：支持明暗主题切换，可自定义主题
+- 🔄 数据同步：支持云端同步，多设备数据互通
+- 🛠️ 丰富设置：提供多样化的配置选项
 
 ## 快速开始
 
-### 安装扩展
+### 安装
 
-#### 从 Chrome 商店安装
-> 🚧 Chrome商店版本正在审核中，暂时只能通过开发版本安装
-
-#### 开发版本安装
-> ⚠️ 确保已安装 Node.js >= 14
-
-1. 克隆项目并构建
-```bash
-git clone https://github.com/your-username/quote-card-generator.git
-cd quote-card-generator
-npm install
-npm run build
+1. 从Chrome商店安装（推荐）
+```
+https://chrome.google.com/webstore/detail/quote-card-generator/[extension-id]
 ```
 
-2. 生成图标
-```bash
-npm run generate-icons
-```
-
-3. 在 Chrome 中加载扩展
-- 打开 Chrome 扩展程序页面 (chrome://extensions/)
-- 开启"开发者模式"
-- 点击"加载已解压的扩展程序"
-- 选择项目的 `dist` 目录
-
-### 前端开发
-
+2. 本地安装
 ```bash
 # 克隆项目
 git clone https://github.com/your-username/quote-card-generator.git
 
 # 安装依赖
+cd quote-card-generator
 npm install
-
-# 开发模式
-npm run dev
 
 # 构建项目
 npm run build
+
+# 在Chrome中加载dist目录
 ```
 
-### 后端开发
+### 使用
 
-```bash
-# 进入服务器目录
-cd server
+1. 在网页中选择文字
+2. 点击右键菜单或使用快捷键
+3. 在弹出窗口中编辑样式
+4. 导出或分享卡片
 
-# 安装依赖
-npm install
+## 技术栈
 
-# 开发模式
-npm run dev
-
-# 运行测试
-npm test
-```
+- 前端：React 18 + TypeScript + Ant Design
+- 构建：Webpack 5 + Babel
+- 测试：Jest + Playwright
+- 工具：ESLint + Prettier
 
 ## 项目结构
 
 ```
-quote-card-generator/
-├── src/                    # 前端源码
-│   ├── popup/             # 弹出窗口
-│   ├── background/        # 后台脚本
-│   ├── content/           # 内容脚本
-│   │   ├── content.js     # 内容处理逻辑
-│   │   └── content.css    # 内容样式定义
-│   └── templates/         # 模板系统
-├── server/                # 后端服务
-│   ├── src/              # 服务器源码
-│   ├── tests/            # 测试用例
-│   └── docs/             # API文档
-└── docs/                  # 项目文档
+src/
+├── background/    # 后台脚本
+├── content/       # 内容脚本
+├── popup/         # 弹出窗口
+├── components/    # 共享组件
+├── managers/      # 管理器
+├── utils/         # 工具函数
+└── styles/        # 样式文件
 ```
 
-## API 文档
+## 开发指南
 
-详细的 API 文档请查看 [server/docs/api.md](server/docs/api.md)
+### 环境要求
 
-### 主要接口
+- Node.js >= 14
+- npm >= 6
+- Chrome >= 88
 
-- 用户接口
-  - 注册: `POST /api/users/register`
-  - 登录: `POST /api/users/login`
-  - 获取信息: `GET /api/users/profile`
+### 开发流程
 
-- 模板接口
-  - 获取列表: `GET /api/templates/market`
-  - 搜索模板: `GET /api/templates/search`
-  - 创建模板: `POST /api/templates`
+1. Fork项目并克隆到本地
+2. 创建功能分支
+3. 提交代码并推送
+4. 创建Pull Request
 
-## 开发进度
+详细信息请查看 [贡献指南](CONTRIBUTING.md)。
 
-详细的开发进度请查看 [CHANGELOG.md](CHANGELOG.md)
+## 文档
 
-- [x] 基础功能实现 (100%)
-- [x] 模板系统开发 (100%)
-- [x] 设置系统实现 (100%)
-- [x] 文本选择功能 (100%)
-- [x] 右键菜单支持 (100%)
-- [x] 组件通信机制 (100%)
-- [x] 后端服务搭建 (100%)
-- [x] API 文档编写 (100%)
-- [x] 测试用例编写 (100%)
-- [x] 持续集成配置 (100%)
-- [x] 部署脚本编写 (100%)
-- [ ] Chrome商店发布 (0%)
+- [项目概述](docs/overview.md)
+- [开发计划](docs/DEVELOPMENT_PLAN.md)
+- [部署文档](docs/deployment.md)
+- [API文档](docs/api/README.md)
+- [使用教程](docs/tutorials/README.md)
 
-## 贡献指南
+## 更新日志
 
-欢迎贡献代码！请查看 [CONTRIBUTING.md](CONTRIBUTING.md) 了解如何参与项目开发。
+查看 [CHANGELOG.md](CHANGELOG.md) 了解详细更新记录。
+
+## 贡献者
+
+感谢所有为项目做出贡献的开发者！
+
+<a href="https://github.com/your-username/quote-card-generator/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=your-username/quote-card-generator" />
+</a>
 
 ## 许可证
 
-本项目采用 MIT 许可证，详情请查看 [LICENSE](LICENSE) 文件。
+本项目采用 [MIT](LICENSE) 许可证。
 
-## 作者
+## 联系我们
 
-- 作者名字
-- 联系方式
-
-## 致谢
-
-- 感谢所有贡献者的付出
-- 感谢使用到的开源项目
-
-## 功能特性
-
-- 模板系统
-  - 丰富的默认模板
-  - 自定义模板支持
-  - 实时预览功能
-  - 模板市场集成
-
-- 设置系统
-  - 主题切换
-  - 快捷键配置
-  - 导出选项设置
-
-- 在线功能
-  - 用户认证
-  - 数据同步
-  - 云端存储
-  - 版本控制
-
-- 监控系统
-  - 性能监控
-  - 日志收集
-  - 告警机制
-  - 监控面板
-
-## 技术栈
-
-- 前端：React + Ant Design
-- 后端：Node.js + Express
-- 数据库：MongoDB
-- 缓存：Redis
-- 存储：支持本地存储、AWS S3、阿里云OSS
-- 监控：自研监控系统
-
-## 部署要求
-
-- Node.js >= 14
-- MongoDB >= 4.4
-- Redis >= 6.0
-- (可选) AWS S3 或 阿里云OSS
+- Issue: [GitHub Issues](https://github.com/your-username/quote-card-generator/issues)
+- Email: your-email@example.com
+- Twitter: [@QuoteCardGen](https://twitter.com/QuoteCardGen)

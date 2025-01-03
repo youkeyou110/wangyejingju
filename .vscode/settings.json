@@ -1,7 +1,7 @@
 {
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "eslint.validate": ["javascript"],
   "files.eol": "\n",
@@ -18,4 +18,4 @@
     "onSave": "test-file"
   },
   "jest.showCoverageOnLoad": true
-} 
+}

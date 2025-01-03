@@ -1,13 +1,21 @@
 module.exports = {
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/popup/js/$1'
-  },
-  collectCoverageFrom: [
-    'popup/js/**/*.js',
-    '!popup/js/vendor/**/*.js'
+  testMatch: [
+    '<rootDir>/src/**/__tests__/**/*.{js,jsx}',
+    '<rootDir>/src/**/*.{spec,test}.{js,jsx}'
   ],
+  collectCoverage: true,
+  collectCoverageFrom: [
+    'src/**/*.{js,jsx}',
+    '!src/**/*.d.ts',
+    '!src/**/__tests__/**',
+    '!src/**/*.test.{js,jsx}',
+    '!src/**/*.spec.{js,jsx}',
+    '!src/index.js',
+    '!src/serviceWorker.js'
+  ],
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov', 'clover'],
   coverageThreshold: {
     global: {
       branches: 80,
@@ -16,16 +24,17 @@ module.exports = {
       statements: 80
     }
   },
-  testMatch: [
-    '<rootDir>/tests/**/*.test.js'
-  ],
   transform: {
-    '^.+\\.js$': 'babel-jest'
+    '^.+\\.(js|jsx)$': 'babel-jest',
+    '^.+\\.css$': '<rootDir>/config/jest/cssTransform.js',
+    '^(?!.*\\.(js|jsx|css|json)$)': '<rootDir>/config/jest/fileTransform.js'
   },
-  moduleFileExtensions: ['js'],
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    '/dist/',
-    '/tests/e2e/'
-  ]
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy'
+  },
+  setupFiles: ['<rootDir>/config/jest/setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/config/jest/setupTests.js'],
+  maxWorkers: '50%',
+  cacheDirectory: '.jest-cache'
 };

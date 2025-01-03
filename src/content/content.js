@@ -1,161 +1,109 @@
-// 内容脚本
-(() => {
-    // 初始化
-    function initialize() {
-        // 添加必要的样式
-        injectStyles();
-        // 注册消息监听
-        setupMessageListeners();
-        // 初始化功能
-        initializeFeatures();
+import { setupMessageHandlers } from './messageHandlers';
+import { setupSelectionHandlers } from './selectionHandlers';
+import { setupKeyboardShortcuts } from './keyboardShortcuts';
+import logManager from '../managers/LogManager';
+
+// 初始化内容脚本
+const initialize = async () => {
+    try {
+        // 初始化消息处理器
+        setupMessageHandlers();
+
+        // 设置文本选择处理器
+        setupSelectionHandlers();
+
+        // 设置键盘快捷键
+        setupKeyboardShortcuts();
+
+        // 记录初始化成功
+        logManager.info('Content script initialized successfully');
+    } catch (error) {
+        logManager.error('Content script initialization failed:', error);
     }
+};
 
-    // 注入样式
-    function injectStyles() {
-        const style = document.createElement('style');
-        style.textContent = `
-            .quote-card-highlight {
-                background-color: rgba(74, 144, 226, 0.1);
-                border-bottom: 2px solid #4a90e2;
-            }
-            .quote-card-tooltip {
-                position: fixed;
-                z-index: 10000;
-                background: white;
-                border: 1px solid #e0e0e0;
-                border-radius: 4px;
-                padding: 8px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            }
-        `;
-        document.head.appendChild(style);
-    }
-
-    // 设置消息监听
-    function setupMessageListeners() {
-        chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-            switch (request.type) {
-                case 'getSelection':
-                    sendResponse({ text: window.getSelection().toString() });
-                    break;
-                case 'highlight':
-                    highlightText(request.text);
-                    sendResponse({ success: true });
-                    break;
-            }
-        });
-    }
-
-    // 初始化功能
-    function initializeFeatures() {
-        // 添加选中文本处理
-        document.addEventListener('mouseup', handleTextSelection);
-    }
-
-    // 处理文本选中
-    function handleTextSelection(e) {
-        const selection = window.getSelection();
-        const text = selection.toString().trim();
-
-        if (text) {
-            showQuoteToolbar(e, text);
-        } else {
-            hideQuoteToolbar();
-        }
-    }
-
-    // 显示引用工具栏
-    function showQuoteToolbar(e, text) {
-        let toolbar = document.querySelector('.quote-card-tooltip');
-        if (!toolbar) {
-            toolbar = createToolbar();
-        }
-
-        const rect = window.getSelection().getRangeAt(0).getBoundingClientRect();
-        positionToolbar(toolbar, rect);
-
-        // 更新工具栏内容
-        toolbar.querySelector('.quote-text').textContent = text;
-    }
-
-    // 创建工具栏
-    function createToolbar() {
-        const toolbar = document.createElement('div');
-        toolbar.className = 'quote-card-tooltip';
-        toolbar.innerHTML = `
-            <div class="quote-text"></div>
-            <div class="quote-actions">
-                <button class="create-card">生成卡片</button>
-                <button class="copy-text">复制文本</button>
-            </div>
-        `;
-
-        // 添加事件监听
-        toolbar.querySelector('.create-card').addEventListener('click', () => {
-            const text = toolbar.querySelector('.quote-text').textContent;
-            chrome.runtime.sendMessage({
-                type: 'createCard',
-                text: text
-            });
-        });
-
-        toolbar.querySelector('.copy-text').addEventListener('click', () => {
-            const text = toolbar.querySelector('.quote-text').textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                showNotification('已复制到剪贴板');
-            });
-        });
-
-        document.body.appendChild(toolbar);
-        return toolbar;
-    }
-
-    // 定位工具栏
-    function positionToolbar(toolbar, rect) {
-        const toolbarRect = toolbar.getBoundingClientRect();
-        let top = rect.bottom + window.scrollY + 10;
-        let left = rect.left + window.scrollX;
-
-        // 确保工具栏不会超出视口
-        if (top + toolbarRect.height > window.innerHeight) {
-            top = rect.top + window.scrollY - toolbarRect.height - 10;
-        }
-        if (left + toolbarRect.width > window.innerWidth) {
-            left = window.innerWidth - toolbarRect.width - 10;
-        }
-
-        toolbar.style.top = `${top}px`;
-        toolbar.style.left = `${left}px`;
-    }
-
-    // 隐藏工具栏
-    function hideQuoteToolbar() {
-        const toolbar = document.querySelector('.quote-card-tooltip');
-        if (toolbar) {
-            toolbar.remove();
-        }
-    }
-
-    // 高亮文本
-    function highlightText(text) {
-        const range = window.getSelection().getRangeAt(0);
-        const span = document.createElement('span');
-        span.className = 'quote-card-highlight';
-        range.surroundContents(span);
-    }
-
-    // 显示通知
-    function showNotification(message) {
-        const notification = document.createElement('div');
-        notification.className = 'quote-card-notification';
-        notification.textContent = message;
-        document.body.appendChild(notification);
-
-        setTimeout(() => {
-            notification.remove();
-        }, 2000);
-    }
-
-    // 初始化
+// 监听DOM加载完成
+document.addEventListener('DOMContentLoaded', () => {
     initialize();
-})();
+});
+
+// 监听消息
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    try {
+        const { type, data } = message;
+
+        switch (type) {
+            case 'GET_SELECTION':
+                // 获取选中文本
+                const selection = window.getSelection().toString();
+                sendResponse({ success: true, data: selection });
+                break;
+
+            case 'HIGHLIGHT_TEXT':
+                // 高亮文本
+                highlightText(data.text);
+                sendResponse({ success: true });
+                break;
+
+            case 'CLEAR_HIGHLIGHT':
+                // 清除高亮
+                clearHighlight();
+                sendResponse({ success: true });
+                break;
+
+            default:
+                sendResponse({ success: false, error: 'Unknown message type' });
+        }
+    } catch (error) {
+        logManager.error('Message handling failed:', error);
+        sendResponse({ success: false, error: error.message });
+    }
+
+    return true; // 保持消息通道开放
+});
+
+// 高亮文本
+const highlightText = (text) => {
+    const range = document.createRange();
+    const selection = window.getSelection();
+
+    // 查找文本节点
+    const walker = document.createTreeWalker(
+        document.body,
+        NodeFilter.SHOW_TEXT,
+        null,
+        false
+    );
+
+    let node;
+    while (node = walker.nextNode()) {
+        const index = node.textContent.indexOf(text);
+        if (index >= 0) {
+            range.setStart(node, index);
+            range.setEnd(node, index + text.length);
+            selection.removeAllRanges();
+            selection.addRange(range);
+
+            // 创建高亮元素
+            const highlight = document.createElement('span');
+            highlight.className = 'quote-card-highlight';
+            highlight.style.backgroundColor = 'yellow';
+            highlight.style.opacity = '0.5';
+
+            range.surroundContents(highlight);
+            break;
+        }
+    }
+};
+
+// 清除高亮
+const clearHighlight = () => {
+    const highlights = document.querySelectorAll('.quote-card-highlight');
+    highlights.forEach(highlight => {
+        const parent = highlight.parentNode;
+        while (highlight.firstChild) {
+            parent.insertBefore(highlight.firstChild, highlight);
+        }
+        parent.removeChild(highlight);
+    });
+};
