@@ -12,7 +12,8 @@
         "create-base-icon": "node scripts/create-base-icon.js"
     },
     "dependencies": {
-        "html2canvas": "^1.4.1"
+        "html2canvas": "^1.4.1",
+        "qrcode": "^1.5.4"
     },
     "devDependencies": {
         "@babel/core": "^7.12.0",

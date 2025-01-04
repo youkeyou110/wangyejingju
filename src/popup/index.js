@@ -6,6 +6,10 @@ import { ExportSettings } from '../components/ExportSettings';
 import { ExportUtil } from '../utils/ExportUtil';
 import { TemplateEditor } from '../components/TemplateEditor';
 import { TemplateManager } from '../utils/TemplateManager';
+import { CardStorage } from '../utils/CardStorage';
+import { HistoryViewer } from '../components/HistoryViewer';
+import { ShareDialog } from '../components/ShareDialog';
+import { ShareUtil } from '../utils/ShareUtil';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('弹出窗口已加载');
@@ -121,14 +125,56 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    saveBtn?.addEventListener('click', () => {
-        console.log('保存卡片');
-        // TODO: 实现保存逻辑
+    // 初始化历史记录查看器
+    const historyViewerContainer = document.createElement('div');
+    historyViewerContainer.style.display = 'none';
+    document.body.appendChild(historyViewerContainer);
+
+    const historyViewer = new HistoryViewer(historyViewerContainer);
+
+    saveBtn?.addEventListener('click', async () => {
+        try {
+            const text = quoteText.value;
+            if (!text) {
+                alert('请输入文字内容');
+                return;
+            }
+
+            // 保存卡片
+            await CardStorage.saveCard({
+                text,
+                style: { ...selectedTemplate.style },
+                templateId: selectedTemplate.id
+            });
+
+            alert('保存成功！');
+        } catch (error) {
+            console.error('保存失败:', error);
+            alert('保存失败，请重试');
+        }
     });
 
-    shareBtn?.addEventListener('click', () => {
-        console.log('分享卡片');
-        // TODO: 实现分享逻辑
+    // 初始化分享对话框
+    const shareDialogContainer = document.createElement('div');
+    shareDialogContainer.style.display = 'none';
+    document.body.appendChild(shareDialogContainer);
+
+    const shareDialog = new ShareDialog(shareDialogContainer);
+
+    shareBtn?.addEventListener('click', async () => {
+        try {
+            const settings = exportSettings.getSettings();
+            const previewContainer = document.querySelector('.preview-container');
+
+            // 导出图片
+            const dataUrl = await ExportUtil.exportToImage(previewContainer, settings);
+
+            // 显示分享对话框
+            shareDialog.show(dataUrl, quoteText.value);
+        } catch (error) {
+            console.error('准备分享失败:', error);
+            alert('准备分享失败，请重试');
+        }
     });
 
     // 监听文本输入

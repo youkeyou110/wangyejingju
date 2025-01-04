@@ -68,6 +68,11 @@ module.exports = {
                 collapseWhitespace: true
             }
         }),
+        new HtmlWebpackPlugin({
+            template: './src/preview/preview.html',
+            filename: 'preview.html',
+            chunks: []
+        }),
         new CopyPlugin({
             patterns: [
                 { from: "src/manifest.json", to: "manifest.json" },
