@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
     <title>金句卡片预览</title>
     <style>
         body {
@@ -27,9 +28,20 @@
         }
 
         .quote-card {
-            min-height: 200px;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .quote-image {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .quote-text {
+            margin-top: 16px;
             word-break: break-all;
-            position: relative;
         }
 
         .watermark {
@@ -39,13 +51,40 @@
             font-size: 12px;
             color: rgba(0, 0, 0, 0.2);
         }
+
+        /* 移动端优化 */
+        @media screen and (max-width: 768px) {
+            .preview-container {
+                width: 100%;
+                margin: 0;
+                border-radius: 0;
+            }
+
+            body {
+                padding: 0;
+            }
+        }
+
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* 错误提示 */
+        .error {
+            color: #ff4d4f;
+            text-align: center;
+            padding: 20px;
+        }
     </style>
 </head>
 
 <body>
     <div class="preview-container">
         <div id="quote-card" class="quote-card">
-            <!-- 内容将通过JavaScript动态添加 -->
+            <img id="quote-image" class="quote-image">
+            <div id="quote-text" class="quote-text"></div>
         </div>
     </div>
     <script>
@@ -88,6 +127,19 @@
             const params = decodeParams();
             renderQuoteCard(params);
         });
+
+        // 获取URL参数
+        const params = new URLSearchParams(window.location.search);
+        const imageUrl = params.get('image');
+        const text = params.get('text');
+
+        // 显示内容
+        if (imageUrl) {
+            document.getElementById('quote-image').src = imageUrl;
+        }
+        if (text) {
+            document.getElementById('quote-text').textContent = text;
+        }
     </script>
 </body>
 

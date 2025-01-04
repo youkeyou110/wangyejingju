@@ -23,55 +23,57 @@ export class ShareUtil {
         }
     }
 
-    static async generateQRCode(dataUrl) {
+    static async generateQRCode(dataUrl, text) {
         try {
-            // 获取预览容器的样式和文本
-            const previewContainer = document.querySelector('.preview-container');
-            const text = previewContainer.textContent;
-            const computedStyle = window.getComputedStyle(previewContainer);
+            // 先将图片上传到临时存储服务
+            const imageUrl = await this.uploadToTempStorage(dataUrl);
 
-            // 构建参数对象
-            const params = {
-                text,
-                style: {
-                    background: computedStyle.background,
-                    color: computedStyle.color,
-                    fontFamily: computedStyle.fontFamily,
-                    fontSize: computedStyle.fontSize,
-                    padding: computedStyle.padding,
-                    borderRadius: computedStyle.borderRadius,
-                }
-            };
-
-            // 将参数编码为URL安全的格式
-            const encodedParams = btoa(encodeURIComponent(JSON.stringify(params)));
-
-            // 使用GitHub Pages URL
-            const previewUrl = `https://your-username.github.io/quote-card-generator/preview.html?data=${encodedParams}`;
-
-            console.log('原始URL长度:', previewUrl.length);
-
-            // 检查数据大小
-            const maxQRSize = 2953;  // QR码版本40-L的最大容量（字节）
-            if (previewUrl.length > maxQRSize) {
-                throw new Error(`数据大小(${(previewUrl.length / 1024).toFixed(1)}KB)超出QR码容量限制(${(maxQRSize / 1024).toFixed(1)}KB)`);
-            }
+            // 生成预览页面URL
+            const previewUrl = this.generatePreviewUrl(imageUrl, text);
 
             // 生成二维码
-            return await QRCode.toDataURL(previewUrl, {
+            const qrcode = await QRCode.toDataURL(previewUrl, {
                 width: 200,
                 margin: 2,
-                errorCorrectionLevel: 'L',
                 color: {
                     dark: '#000000',
-                    light: '#ffffff'
+                    light: '#FFFFFF'
                 }
             });
+
+            return qrcode;
         } catch (error) {
-            console.error('生成二维码失败:', error.message);
-            console.error('错误详情:', error);
+            console.error('生成二维码失败:', error);
             throw error;
         }
+    }
+
+    static async uploadToTempStorage(dataUrl) {
+        const formData = new FormData();
+        const blob = await (await fetch(dataUrl)).blob();
+        formData.append('image', blob);
+
+        // 替换YOUR_API_KEY为实际的API key
+        const response = await fetch('https://api.imgbb.com/1/upload?key=533ebaa866690475fba3ebeb31f46638', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+        if (!result.success) {
+            throw new Error('图片上传失败: ' + result.error?.message);
+        }
+        return result.data.url;
+    }
+
+    static generatePreviewUrl(imageUrl, text) {
+        const params = new URLSearchParams({
+            image: imageUrl,
+            text: text
+        });
+
+        // 替换your-username为你的GitHub用户名
+        return `https://your-username.github.io/quote-card-generator/preview.html?${params}`;
     }
 
     static async copyToClipboard(dataUrl) {
