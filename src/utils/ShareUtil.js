@@ -72,8 +72,8 @@ export class ShareUtil {
             text: text
         });
 
-        // 替换your-username为你的GitHub用户名
-        return `https://your-username.github.io/quote-card-generator/preview.html?${params}`;
+        // 将your-username替换为你的实际GitHub用户名
+        return `https://[你的GitHub用户名].github.io/quote-card-generator/preview.html?${params}`;
     }
 
     static async copyToClipboard(dataUrl) {
