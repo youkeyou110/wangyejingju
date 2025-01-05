@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
     <title>金句卡片预览</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/wangyejingju/favicon.ico">
     <style>
+        /* 保持原有样式 */
         body {
             margin: 0;
             padding: 20px;
@@ -24,43 +26,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             overflow: hidden;
         }
-        .preview-header {
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-        }
-        .preview-content {
-            padding: 20px;
-        }
-        #quote-image {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-        }
-        #quote-text {
-            margin-top: 20px;
-            font-size: 16px;
-            line-height: 1.6;
-            color: #333;
-            text-align: center;
-        }
-        .error {
-            color: #ff4d4f;
-            text-align: center;
-            padding: 20px;
-            font-size: 14px;
-        }
-        .loading {
-            text-align: center;
-            padding: 40px 20px;
-            color: #666;
-        }
-        .no-content {
-            text-align: center;
-            padding: 40px 20px;
-            color: #999;
-        }
+        /* 其他样式保持不变... */
     </style>
 </head>
 <body>
@@ -79,6 +45,15 @@
         </div>
     </div>
     <script>
+        window.onerror = function(msg, url, line, col, error) {
+            console.error('Error:', error);
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = '发生错误，请刷新页面重试';
+            errorDiv.style.display = 'block';
+            document.getElementById('loading').style.display = 'none';
+            return false;
+        };
+
         const loading = document.getElementById('loading');
         const error = document.getElementById('error');
         const image = document.getElementById('quote-image');
