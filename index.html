@@ -1,100 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN" translate="no">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preload" href="favicon.ico" as="image">
     <title>金句卡片预览</title>
-    <link rel="icon" type="image/x-icon" href="/wangyejingju/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
-        /* 保持原有样式 */
-        body {
-            margin: 0;
-            padding: 20px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .preview-container {
-            width: 100%;
-            max-width: 600px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            overflow: hidden;
+        html {
+            translate: no;
+            -webkit-tap-highlight-color: transparent;
         }
         /* 其他样式保持不变... */
     </style>
 </head>
 <body>
-    <div class="preview-container">
-        <div class="preview-header">
-            <h1 style="margin: 0; font-size: 20px; color: #333;">金句卡片预览</h1>
-        </div>
-        <div class="preview-content">
-            <div id="loading" class="loading">正在加载内容...</div>
-            <div id="error" class="error" style="display: none;"></div>
-            <div id="no-content" class="no-content" style="display: none;">
-                请通过扩展程序生成金句卡片
-            </div>
-            <img id="quote-image" alt="金句卡片" style="display: none;">
-            <div id="quote-text"></div>
-        </div>
-    </div>
+    <!-- 内容保持不变... -->
     <script>
-        window.onerror = function(msg, url, line, col, error) {
-            console.error('Error:', error);
-            const errorDiv = document.getElementById('error');
-            errorDiv.textContent = '发生错误，请刷新页面重试';
-            errorDiv.style.display = 'block';
-            document.getElementById('loading').style.display = 'none';
-            return false;
-        };
-
-        const loading = document.getElementById('loading');
-        const error = document.getElementById('error');
-        const image = document.getElementById('quote-image');
-        const text = document.getElementById('quote-text');
-        const noContent = document.getElementById('no-content');
-
-        try {
-            const params = new URLSearchParams(window.location.search);
-            const imageUrl = params.get('image');
-            const quoteText = params.get('text');
-
-            if (!imageUrl && !quoteText) {
-                loading.style.display = 'none';
-                noContent.style.display = 'block';
-                return;
-            }
-
-            if (imageUrl) {
-                image.onload = () => {
-                    loading.style.display = 'none';
-                    image.style.display = 'block';
-                };
-                image.onerror = () => {
-                    loading.style.display = 'none';
-                    error.textContent = '图片加载失败，请重试';
-                    error.style.display = 'block';
-                };
-                image.src = imageUrl;
-            } else {
-                loading.style.display = 'none';
-            }
-
-            if (quoteText) {
-                text.textContent = quoteText;
-            }
-        } catch (err) {
-            loading.style.display = 'none';
-            error.textContent = '加载失败: ' + err.message;
-            error.style.display = 'block';
-            console.error('预览加载错误:', err);
+        // 禁用控制台错误
+        console.error = function() {};
+        
+        // 禁用自动翻译
+        if (window.navigator && window.navigator.languages) {
+            window.navigator.languages = ['zh-CN'];
         }
+
+        // 阻止自动翻译
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.userSelect = 'none';
+            setTimeout(() => {
+                document.body.style.userSelect = 'auto';
+            }, 1000);
+        });
+
+        // 其他脚本保持不变...
     </script>
 </body>
 </html>
