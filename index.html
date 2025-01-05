@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金句卡片预览</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .preview-container {
+            max-width: 100%;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        #quote-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        #quote-text {
+            padding: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <img id="quote-image" alt="金句卡片">
+        <div id="quote-text"></div>
+    </div>
+    <script>
+        // 获取URL参数
+        const params = new URLSearchParams(window.location.search);
+        const imageUrl = params.get('image');
+        const text = params.get('text');
+
+        // 显示内容
+        if (imageUrl) {
+            document.getElementById('quote-image').src = imageUrl;
+        }
+        if (text) {
+            document.getElementById('quote-text').textContent = text;
+        }
+    </script>
+</body>
+</html>
