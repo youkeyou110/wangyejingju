@@ -1,0 +1,14 @@
+{
+    "extName": {
+        "message": "Quote Card Generator"
+    },
+    "extDescription": {
+        "message": "一个简单的引用卡片生成器"
+    },
+    "noTemplates": {
+        "message": "暂无模板"
+    },
+    "loading": {
+        "message": "加载中..."
+    }
+}
