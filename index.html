@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>金句卡片预览</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
         body {
             margin: 0;
-            padding: 16px;
+            padding: 20px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f5f5f5;
             min-height: 100vh;
@@ -16,42 +17,108 @@
             align-items: center;
         }
         .preview-container {
-            max-width: 100%;
+            width: 100%;
+            max-width: 600px;
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             overflow: hidden;
+        }
+        .preview-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        .preview-content {
+            padding: 20px;
         }
         #quote-image {
             max-width: 100%;
             height: auto;
             display: block;
+            margin: 0 auto;
         }
         #quote-text {
-            padding: 20px;
+            margin-top: 20px;
             font-size: 16px;
             line-height: 1.6;
             color: #333;
+            text-align: center;
+        }
+        .error {
+            color: #ff4d4f;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+        .no-content {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
         }
     </style>
 </head>
 <body>
     <div class="preview-container">
-        <img id="quote-image" alt="金句卡片">
-        <div id="quote-text"></div>
+        <div class="preview-header">
+            <h1 style="margin: 0; font-size: 20px; color: #333;">金句卡片预览</h1>
+        </div>
+        <div class="preview-content">
+            <div id="loading" class="loading">正在加载内容...</div>
+            <div id="error" class="error" style="display: none;"></div>
+            <div id="no-content" class="no-content" style="display: none;">
+                请通过扩展程序生成金句卡片
+            </div>
+            <img id="quote-image" alt="金句卡片" style="display: none;">
+            <div id="quote-text"></div>
+        </div>
     </div>
     <script>
-        // 获取URL参数
-        const params = new URLSearchParams(window.location.search);
-        const imageUrl = params.get('image');
-        const text = params.get('text');
+        const loading = document.getElementById('loading');
+        const error = document.getElementById('error');
+        const image = document.getElementById('quote-image');
+        const text = document.getElementById('quote-text');
+        const noContent = document.getElementById('no-content');
 
-        // 显示内容
-        if (imageUrl) {
-            document.getElementById('quote-image').src = imageUrl;
-        }
-        if (text) {
-            document.getElementById('quote-text').textContent = text;
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const imageUrl = params.get('image');
+            const quoteText = params.get('text');
+
+            if (!imageUrl && !quoteText) {
+                loading.style.display = 'none';
+                noContent.style.display = 'block';
+                return;
+            }
+
+            if (imageUrl) {
+                image.onload = () => {
+                    loading.style.display = 'none';
+                    image.style.display = 'block';
+                };
+                image.onerror = () => {
+                    loading.style.display = 'none';
+                    error.textContent = '图片加载失败，请重试';
+                    error.style.display = 'block';
+                };
+                image.src = imageUrl;
+            } else {
+                loading.style.display = 'none';
+            }
+
+            if (quoteText) {
+                text.textContent = quoteText;
+            }
+        } catch (err) {
+            loading.style.display = 'none';
+            error.textContent = '加载失败: ' + err.message;
+            error.style.display = 'block';
+            console.error('预览加载错误:', err);
         }
     </script>
 </body>
